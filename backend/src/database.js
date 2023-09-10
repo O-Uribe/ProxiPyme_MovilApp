@@ -1,8 +1,10 @@
 const mongoose = require('mongoose');
+// Cargar variables de entorno
+require('dotenv').config();
+
 
 // URI de conexión a la base de datos
-const URI = "mongodb+srv://ProxiPyme:ay24WV7Lve6U8JPSdfad2@cluster0.hvk7eja.mongodb.net/?retryWrites=true&w=majority"
-
+const URI = process.env.MONGODB_URI;
 
 // Conectarse a la base de datos
 mongoose.connect(URI, {
