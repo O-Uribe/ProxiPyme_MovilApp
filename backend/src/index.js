@@ -1,11 +1,13 @@
 const app = require('./app');
 
+const PORT = process.env.PORT || 5000;
 
 async function main () {
-    await app.listen(3000);
-    console.log('Server on port 3000');
-}
-
+    //Inicializar el servidor
+    await app.listen(PORT, () => {
+    console.log(`Servidor escuchando en el puerto ${PORT}`);
+});}
 
 main();
 
+     
