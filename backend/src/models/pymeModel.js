@@ -11,7 +11,6 @@ const reseñaSchema = new mongoose.Schema({
   usuario_id: {
     type: mongoose.Schema.Types.ObjectId,
     ref: 'User',
-    required: true
   },
   calificacion: Number,
   comentario: String
@@ -34,6 +33,6 @@ const localSchema = new mongoose.Schema({
   reseñas: [reseñaSchema]
 });
 
-const Local = mongoose.model('Pyme', localSchema);
+const Pyme = mongoose.model('datosPymes', localSchema);
 
-module.exports = Local;
+module.exports = Pyme;
