@@ -1,6 +1,7 @@
 const express =  require('express');
 const app = express();
 
+
 //Modulos para el servidor 
 const morgan = require('morgan');
 const cors = require('cors');
@@ -9,6 +10,7 @@ const cors = require('cors');
 const mongoose = require('./database'); 
 
 //Configuraciones
+app.use(express.json());
 app.use(morgan('dev'));
 app.use(cors());
 
