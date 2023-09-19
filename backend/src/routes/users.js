@@ -25,7 +25,7 @@ router.post('/api/users/login', async (req, res) => {
             return res.status(401).json({ error: 'Credenciales incorrectas' });
         }
         // Comparar la contraseña ingresada con la contraseña almacenada en la base de datos
-        const passwordMatch = bcrypt.compare(contraseña, user.contraseña);
+        const passwordMatch = await bcrypt.compare(contraseña, user.contraseña);
         if (passwordMatch) {
             const token = jwt.sign({ userId: user._id, correo: user.correo}, 'taller_IV', { expiresIn: '1h' });
             res.status(200).json({ message: "Validación correcta, su token es el siguiente:", token });
