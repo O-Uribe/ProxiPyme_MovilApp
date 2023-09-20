@@ -3,7 +3,14 @@ import 'package:proxi_pyme/pages/login_page.dart';
 import 'package:proxi_pyme/pages/register_page.dart';
 import 'package:proxi_pyme/utils/constants.dart';
 
+// Uso de Cloudinary desde frontend
+import 'package:cloudinary_flutter/cloudinary_context.dart';
+import 'package:cloudinary_flutter/image/cld_image.dart';
+import 'package:cloudinary_url_gen/cloudinary.dart';
+
 void main() {
+  // Cloudinary iniciado
+    CloudinaryContext.cloudinary = Cloudinary.fromCloudName(cloudName: "drjqvi7mx");
   runApp(const MyApp());
 }
 
@@ -51,6 +58,11 @@ class MainPage extends StatelessWidget {
             ),
             SizedBox(
               height: 20,
+            ),
+            Padding(
+              padding: const EdgeInsets.all(50.0),
+              child: CldImageWidget(
+                publicId: "sample"),
             ),
             ElevatedButton.icon(
                 onPressed: () {

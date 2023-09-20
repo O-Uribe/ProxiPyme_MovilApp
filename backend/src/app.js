@@ -17,6 +17,7 @@ app.use(cors());
 //Rutas 
 app.use(require('./routes/users'));
 app.use(require('./routes/pymes'));
+app.use(require('./routes/storage'));
 
 
 module.exports = app;

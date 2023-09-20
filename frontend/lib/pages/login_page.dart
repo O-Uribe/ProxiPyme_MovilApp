@@ -17,8 +17,11 @@ class LoginPageState extends State<LoginPage> {
   TextEditingController passwordController = TextEditingController();
 
   Future<void> loginUser(BuildContext context) async {
-    final url = Uri.parse('http://192.168.1.8:5000/api/users/login');
-    final response = await http.post(
+      // Xalo
+      // final url = Uri.parse('http://192.168.1.8:5000/api/users/login');
+      // Naxo
+      final url = Uri.parse('http://192.168.0.129:5000/api/users/login');
+      final response = await http.post(
       url,
       headers: {
         'Content-Type': 'application/json',
