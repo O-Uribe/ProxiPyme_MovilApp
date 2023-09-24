@@ -17,11 +17,12 @@ class LoginPageState extends State<LoginPage> {
   TextEditingController passwordController = TextEditingController();
 
   Future<void> loginUser(BuildContext context) async {
-      // Xalo
-      // final url = Uri.parse('http://192.168.1.8:5000/api/users/login');
-      // Naxo
-      final url = Uri.parse('http://192.168.0.129:5000/api/users/login');
-      final response = await http.post(
+    // Xalo
+    // final url = Uri.parse('http://192.168.1.8:5000/api/users/login');
+    // Naxo
+    final url = Uri.parse('http://192.168.0.129:5000/api/users/login');
+    
+    final response = await http.post(
       url,
       headers: {
         'Content-Type': 'application/json',
@@ -47,8 +48,8 @@ class LoginPageState extends State<LoginPage> {
       if (!context.mounted) return;
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
-          duration: const Duration(seconds: 1),
-          content: Text('Error al iniciar sesión: verifica tus datos'),
+          duration: const Duration(seconds: 2),
+          content: Text('Error al iniciar sesión: Verifica tus datos'),
         ),
       );
     }
@@ -93,6 +94,7 @@ class LoginPageState extends State<LoginPage> {
               decoration: const InputDecoration(
                 border: UnderlineInputBorder(),
                 labelText: 'Contraseña',
+
               ),
             ),
           ),
