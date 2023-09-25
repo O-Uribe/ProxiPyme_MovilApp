@@ -23,7 +23,10 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'Flutter Demo',
       debugShowCheckedModeBanner: false,
-      theme: ThemeData(primarySwatch: Colors.teal, useMaterial3: true),
+      theme: ThemeData(
+        primarySwatch: Colors.teal,
+        useMaterial3: true
+      ),
       home: const MainPage(),
     );
   }
@@ -60,9 +63,9 @@ class MainPage extends StatelessWidget {
               height: 20,
             ),
             Padding(
-              padding: const EdgeInsets.all(50.0),
+              padding: const EdgeInsets.all(100.0),
               child: CldImageWidget(
-                publicId: "sample"),
+                publicId: "logo"),
             ),
             ElevatedButton.icon(
                 onPressed: () {

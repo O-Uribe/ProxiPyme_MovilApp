@@ -27,7 +27,8 @@ class ImageUploadPageState extends State<ImageUploadPage> {
       return;
     }
 
-    var request = http.MultipartRequest('POST', Uri.parse('http://192.168.0.129/upload'));
+    // var request = http.MultipartRequest('POST', Uri.parse('http://192.168.0.129/upload'));
+    var request = http.MultipartRequest('POST', Uri.parse('https://proxipymemovilapp-production.up.railway.app/upload'));
     request.files.add(await http.MultipartFile.fromPath('image', _image!.path));
 
     try {
