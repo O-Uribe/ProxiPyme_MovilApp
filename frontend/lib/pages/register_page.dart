@@ -14,13 +14,18 @@ class _RegisterPageState extends State<RegisterPage> {
   TextEditingController emailController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
 
-  Future<void> registerUser(String username, String email, String password) async {
+  Future<void> registerUser(
+      String username, String email, String password) async {
     // Xalo
     // final url = Uri.parse('http://192.168.1.8:5000/api/users/register');
-    
+
     // Naxo
-    final url = Uri.parse('http://192.168.0.129:5000/api/users/register');
-    
+    //final url = Uri.parse('http://192.168.0.129:5000/api/users/register');
+
+    //railway
+    final url = Uri.parse(
+        'https://proxipymemovilapp-production.up.railway.app/api/users/register');
+
     final response = await http.post(
       url,
       headers: {
