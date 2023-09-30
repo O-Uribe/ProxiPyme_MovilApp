@@ -4,6 +4,7 @@ import 'dart:convert';
 import 'package:proxi_pyme/pages/home_page.dart';
 import 'package:proxi_pyme/utils/constants.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({Key? key}) : super(key: key);
@@ -15,44 +16,69 @@ class LoginPage extends StatefulWidget {
 class LoginPageState extends State<LoginPage> {
   TextEditingController emailController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
+  late Future<SharedPreferences> prefsFuture;
 
-  Future<void> loginUser(BuildContext context) async {
+  @override
+  void initState() {
+    super.initState();
+    prefsFuture = SharedPreferences.getInstance();
+  }
+
+  void loginUser() async {
+    SharedPreferences prefs = await prefsFuture;
+
     // Xalo
-    // final url = Uri.parse('http://192.168.1.8:5000/api/users/login');
+    final url = Uri.parse('http://192.168.1.187:5000/api/users/login');
     // Naxo
     //final url = Uri.parse('http://192.168.0.129:5000/api/users/login');
     //Railway
-    final url = Uri.parse(
-        'https://proxipymemovilapp-production.up.railway.app/api/users/login');
+    //final url = Uri.parse(
+    //'https://proxipymemovilapp-production.up.railway.app/api/users/login');
 
-    final response = await http.post(
-      url,
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: json.encode({
-        'correo': emailController.text,
-        'contraseña': passwordController.text,
-      }),
-    );
+    if (emailController.text.isNotEmpty && passwordController.text.isNotEmpty) {
+      final response = await http.post(
+        url,
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: json.encode({
+          'correo': emailController.text,
+          'contraseña': passwordController.text,
+        }),
+      );
 
-    if (response.statusCode == 200) {
-      final token = json.decode(response.body)['token'];
+      var jsonResponse = json.decode(response.body);
+      if (jsonResponse['status']) {
+        final token = json.decode(response.body)['token'];
 
-      final secureStorage = FlutterSecureStorage();
-      await secureStorage.write(key: 'auth_token', value: token);
+        final secureStorage = FlutterSecureStorage();
+        await secureStorage.write(key: 'auth_token', value: token);
 
-      if (!context.mounted) return;
-      Navigator.of(context)
-          .push(MaterialPageRoute(builder: (BuildContext context) {
-        return const HomePage();
-      }));
+        prefs.setString('token', token);
+
+        if (!context.mounted) return;
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => HomePage(
+              token: token,
+            ),
+          ),
+        );
+      } else {
+        if (!context.mounted) return;
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            duration: const Duration(seconds: 2),
+            content: Text('Error al iniciar sesión: Verifica tus datos'),
+          ),
+        );
+      }
     } else {
-      if (!context.mounted) return;
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
           duration: const Duration(seconds: 2),
-          content: Text('Error al iniciar sesión: Verifica tus datos'),
+          content: Text('No puedes dejar campos vacíos'),
         ),
       );
     }
@@ -105,7 +131,7 @@ class LoginPageState extends State<LoginPage> {
           ),
           ElevatedButton.icon(
             onPressed: () {
-              loginUser(context); // Pasa el contexto como argumento
+              loginUser(); // Pasa el contexto como argumento
             },
             icon: Icon(loginIcon),
             style: ElevatedButton.styleFrom(minimumSize: Size(250, 45)),

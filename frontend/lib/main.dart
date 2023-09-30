@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:jwt_decoder/jwt_decoder.dart';
+import 'package:proxi_pyme/pages/home_page.dart';
 import 'package:proxi_pyme/pages/login_page.dart';
 import 'package:proxi_pyme/pages/register_page.dart';
 import 'package:proxi_pyme/utils/constants.dart';
@@ -7,27 +9,33 @@ import 'package:proxi_pyme/utils/constants.dart';
 import 'package:cloudinary_flutter/cloudinary_context.dart';
 import 'package:cloudinary_flutter/image/cld_image.dart';
 import 'package:cloudinary_url_gen/cloudinary.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
-void main() {
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  SharedPreferences prefs = await SharedPreferences.getInstance();
+
   // Cloudinary iniciado
-    CloudinaryContext.cloudinary = Cloudinary.fromCloudName(cloudName: "drjqvi7mx");
-  runApp(const MyApp());
+  CloudinaryContext.cloudinary =
+      Cloudinary.fromCloudName(cloudName: "drjqvi7mx");
+  runApp(MyApp(
+    token: prefs.getString('token'),
+  ));
 }
 
 class MyApp extends StatelessWidget {
-  const MyApp({super.key});
+  final token;
+  const MyApp({this.token, Key? key}) : super(key: key);
 
-  // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Flutter Demo',
       debugShowCheckedModeBanner: false,
-      theme: ThemeData(
-        primarySwatch: Colors.teal,
-        useMaterial3: true
-      ),
-      home: const MainPage(),
+      theme: ThemeData(primarySwatch: Colors.teal, useMaterial3: true),
+      home: (JwtDecoder.isExpired(token) == true || token == null)
+          ? MainPage()
+          : HomePage(token: token),
     );
   }
 }
@@ -47,7 +55,7 @@ class MainPage extends StatelessWidget {
         centerTitle: true,
         backgroundColor: Colors.teal,
       ),
-      body: Center(
+      body: SingleChildScrollView(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
@@ -63,9 +71,8 @@ class MainPage extends StatelessWidget {
               height: 20,
             ),
             Padding(
-              padding: const EdgeInsets.all(100.0),
-              child: CldImageWidget(
-                publicId: "logo"),
+              padding: const EdgeInsets.all(30.0),
+              child: CldImageWidget(publicId: "logo"),
             ),
             ElevatedButton.icon(
                 onPressed: () {

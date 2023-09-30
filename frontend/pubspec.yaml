@@ -19,6 +19,8 @@ dependencies:
   cloudinary_flutter: ^1.0.0
   cloudinary_url_gen: ^1.0.0
   image_picker: ^1.0.4
+  shared_preferences: ^2.2.1
+  jwt_decoder: ^2.0.1
 
 dev_dependencies:
   flutter_test:

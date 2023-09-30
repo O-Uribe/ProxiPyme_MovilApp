@@ -1,13 +1,27 @@
 import 'package:flutter/material.dart';
-// import 'package:proxi_pyme/main.dart';
-import 'image_upload_page.dart'; // Importa la página de carga de imágenes
+import 'package:jwt_decoder/jwt_decoder.dart';
+import 'image_upload_page.dart';
 
-class HomePage extends StatelessWidget {
-  const HomePage({super.key});
+class HomePage extends StatefulWidget {
+  final token;
+  const HomePage({@required this.token, Key? key}) : super(key: key);
+
+  State<HomePage> createState() => _HomePageState();
+}
+
+class _HomePageState extends State<HomePage> {
+  late String email;
+  @override
+  void initState() {
+    super.initState();
+    Map<String, dynamic> jwtDecodedToken = JwtDecoder.decode(widget.token);
+
+    email = jwtDecodedToken['correo'];
+  }
 
   @override
   Widget build(BuildContext context) {
-    var usuario = "Jaime";
+    //var usuario = "Kirby";
 
     return Scaffold(
       backgroundColor: Colors.teal.shade50,
@@ -21,10 +35,10 @@ class HomePage extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Text(
-              "Bienvenido $usuario",
+              "Bienvenido $email",
               style: TextStyle(
                 color: Colors.teal,
-                fontSize: 55,
+                fontSize: 20,
                 fontWeight: FontWeight.bold,
               ),
               textAlign: TextAlign.center,
