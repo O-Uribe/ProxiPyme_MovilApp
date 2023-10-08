@@ -4,7 +4,6 @@ const Usuarios = require('../models/userModel');
 const validator = require('validator');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
-const faker = require('faker');
 
 // Ruta para obtener todos los usuarios
 router.get('/api/users', async (req, res) => {
@@ -41,51 +40,95 @@ router.post('/api/users/login', async (req, res) => {
 
 
 // Ruta para registrar un nuevo usuario
+// router.post('/api/users/register', async (req, res) => {
+//     try {
+//         const { nombreUsuario, correo, contraseña } = req.body;
+            
+//         if (!validator.isEmail(correo)) {
+//             return res.status(400).json({ error: 'El correo electrónico no es válido' });
+//         }
+//         // Verificar si el correo electrónico ya está en uso
+//         const existente = await Usuarios.findOne({ correo });
+//         if (existente) {
+//             return res.status(400).json({ error: 'El correo electrónico ya está registrado' });
+//         }
+//         // Encriptar la contraseña
+//         const hashedPassword = await bcrypt.hash(contraseña, 10);
+
+//         //Crea un nuevo usuario
+//         const newUser = new Usuarios({
+//             nombreUsuario,
+//             correo,
+//             contraseña: hashedPassword
+//         });
+//         await newUser.save();
+//         res.status(201).json({ message: 'Usuario registrado con éxito' });
+
+//     } catch (error) {
+//         res.status(400).json({ message: error.message });
+//     }
+// });
+
+// Ruta para registrar un nuevo usuario
 router.post('/api/users/register', async (req, res) => {
     try {
-        const { nombreUsuario, correo, contraseña } = req.body;
-            
+        const { nombreUsuario, correo, contraseña, tipoUsuario } = req.body;
         if (!validator.isEmail(correo)) {
             return res.status(400).json({ error: 'El correo electrónico no es válido' });
         }
+
         // Verificar si el correo electrónico ya está en uso
         const existente = await Usuarios.findOne({ correo });
         if (existente) {
             return res.status(400).json({ error: 'El correo electrónico ya está registrado' });
         }
+
         // Encriptar la contraseña
         const hashedPassword = await bcrypt.hash(contraseña, 10);
 
-        //Crea un nuevo usuario
-        const newUser = new Usuarios({
-            nombreUsuario,
-            correo,
-            contraseña: hashedPassword
-        });
-        await newUser.save();
+        if (tipoUsuario === 'Cliente') {
+          // Crear un nuevo cliente
+            const newUser = new Usuarios({
+                tipoUsuario,
+                nombreUsuario,
+                correo,
+                contraseña: hashedPassword,
+            });
+
+            await newUser.save();
+
+        } else if (tipoUsuario === 'Pyme') {
+            // Manejar el registro de pyme aquí
+            const {
+                nombrePyme,
+                direccionPyme,
+                encargadoPyme,
+                descripcionPyme,
+                logoPyme
+            } = req.body;
+
+            const newUser = new Usuarios({
+                nombreUsuario,
+                correo,
+                contraseña: hashedPassword,
+                nombrePyme,
+                direccionPyme,
+                encargadoPyme,
+                descripcionPyme,
+                logoPyme
+            });
+            await newUser.save();
+
+        } else {
+            return res.status(400).json({ error: 'Tipo de usuario no válido' });
+        }
+
         res.status(201).json({ message: 'Usuario registrado con éxito' });
 
     } catch (error) {
         res.status(400).json({ message: error.message });
     }
 });
-
-
-// // Ruta de prueba usuarios aleatorios
-// router.get('/api/users/create',async(req, res) => {
-//     for (let i = 0; i <= 10; i++) {
-//         await Usuarios.create({
-//             nombreUsuario: faker.name.firstName(),
-//             correo: faker.internet.email(),
-//             contraseña: faker.internet.password()
-//         });
-//     }
-//     try {
-//         res.json({ message: '10 usuarios creados' });
-//     } catch (error) {
-//         res.status(400).json({ message: error.message });
-//     }
-// });
 
 
 module.exports = router;
