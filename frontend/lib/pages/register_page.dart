@@ -34,7 +34,8 @@ class _RegisterPageState extends State<RegisterPage> {
       String? pymeManager,
       String? pymeDescription,
       String? logoPath}) async {
-    final url = Uri.parse('http://192.168.1.187:5000/api/users/register');
+    // final url = Uri.parse('http://192.168.1.187:5000/api/users/register');
+    final url = Uri.parse('http://192.168.0.129:5000/api/users/register');
 
     final response = await http.post(
       url,
@@ -222,6 +223,8 @@ class _RegisterPageState extends State<RegisterPage> {
                     pymeManager: pymeManager,
                     pymeDescription: pymeDescription,
                     logoPath: logoPath); // Pasa la ruta de la imagen
+
+                Navigator.pop(context);
               },
               style: ElevatedButton.styleFrom(minimumSize: Size(250, 45)),
               child: Text(

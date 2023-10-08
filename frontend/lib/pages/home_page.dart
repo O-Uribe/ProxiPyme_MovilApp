@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:jwt_decoder/jwt_decoder.dart';
-import 'image_upload_page.dart';
 
 class HomePage extends StatefulWidget {
-  final token;
+  final dynamic token;
   const HomePage({@required this.token, Key? key}) : super(key: key);
 
+  @override
   State<HomePage> createState() => _HomePageState();
 }
 
@@ -14,7 +14,7 @@ class _HomePageState extends State<HomePage> {
   @override
   void initState() {
     super.initState();
-    Map<String, dynamic> jwtDecodedToken = JwtDecoder.decode(widget.token);
+    Map<String, dynamic>? jwtDecodedToken = JwtDecoder.decode(widget.token);
 
     email = jwtDecodedToken['correo'];
   }
@@ -48,10 +48,7 @@ class _HomePageState extends State<HomePage> {
             ),
             ElevatedButton(
               onPressed: () {
-                Navigator.of(context).push(
-                  MaterialPageRoute(builder: (BuildContext context) {
-                    return ImageUploadPage(); // Navega a la página de carga de imágenes
-                  }),
+                Navigator.pushNamed(context, '/UploadImage',
                 );
               },
               style: ElevatedButton.styleFrom(minimumSize: Size(250, 45)),

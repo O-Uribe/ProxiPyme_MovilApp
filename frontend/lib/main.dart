@@ -4,6 +4,7 @@ import 'package:proxi_pyme/pages/home_page.dart';
 import 'package:proxi_pyme/pages/login_page.dart';
 import 'package:proxi_pyme/pages/register_page.dart';
 import 'package:proxi_pyme/utils/constants.dart';
+import 'package:proxi_pyme/pages/image_upload_page.dart';
 
 // Uso de Cloudinary desde frontend
 import 'package:cloudinary_flutter/cloudinary_context.dart';
@@ -24,7 +25,7 @@ void main() async {
 }
 
 class MyApp extends StatelessWidget {
-  final token;
+  final dynamic token;
   const MyApp({this.token, Key? key}) : super(key: key);
 
   @override
@@ -33,9 +34,18 @@ class MyApp extends StatelessWidget {
       title: 'Flutter Demo',
       debugShowCheckedModeBanner: false,
       theme: ThemeData(primarySwatch: Colors.teal, useMaterial3: true),
-      home: (JwtDecoder.isExpired(token) == true || token == null)
+      home: (token == null || JwtDecoder.isExpired(token) == true)
           ? MainPage()
           : HomePage(token: token),
+
+      // Rutas de la página
+      initialRoute: '/',
+      routes: {
+        '/HomePage': (context) => HomePage(token: token),
+        '/Login': (context) => LoginPage(),
+        '/Register': (context) => RegisterPage(),
+        '/UploadImage': (context) => ImageUploadPage()
+      },
     );
   }
 }
@@ -76,11 +86,8 @@ class MainPage extends StatelessWidget {
             ),
             ElevatedButton.icon(
                 onPressed: () {
-                  Navigator.of(context).push(MaterialPageRoute(
-                    builder: (BuildContext context) {
-                      return const LoginPage();
-                    },
-                  ));
+                  Navigator.pushNamed(context, '/Login',
+                  );
                 },
                 icon: Icon(loginIcon),
                 style: ElevatedButton.styleFrom(minimumSize: Size(250, 45)),
@@ -93,10 +100,8 @@ class MainPage extends StatelessWidget {
             ),
             ElevatedButton(
               onPressed: () {
-                Navigator.push(context,
-                    MaterialPageRoute(builder: (BuildContext context) {
-                  return const RegisterPage();
-                }));
+                Navigator.pushNamed(context, '/Register',
+                );
               },
               style: ElevatedButton.styleFrom(minimumSize: Size(250, 45)),
               child: Text(
