@@ -119,6 +119,7 @@ class _RegisterPageState extends State<RegisterPage> {
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 8),
               child: TextFormField(
+                obscureText: true,
                 controller: passwordController,
                 decoration: const InputDecoration(
                   border: UnderlineInputBorder(),

@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:jwt_decoder/jwt_decoder.dart';
+// import 'package:jwt_decoder/jwt_decoder.dart';
+import 'package:proxi_pyme/routes/routes_nav_bar.dart';
+import 'package:proxi_pyme/widgets/navigation_bar.dart';
 
 class HomePage extends StatefulWidget {
   final dynamic token;
@@ -10,56 +12,35 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  late String email;
+  
+  // Variables BottomNavigationBar
+  int index = 0;
+  BottomNavigation ? myBottomNavigationBar;
+  
+  // late String email;
+
   @override
   void initState() {
-    super.initState();
-    Map<String, dynamic>? jwtDecodedToken = JwtDecoder.decode(widget.token);
+    myBottomNavigationBar = BottomNavigation(indexActual: (i){
+      setState(() {
+        index = i;
+      });
+    });
 
-    email = jwtDecodedToken['correo'];
+    super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
-    //var usuario = "Kirby";
-
-    return Scaffold(
+     return Scaffold(
+      bottomNavigationBar: myBottomNavigationBar,
       backgroundColor: Colors.teal.shade50,
       appBar: AppBar(
-        title: const Text("Main Page"),
+        title: const Text("Inicio"),
         centerTitle: true,
         backgroundColor: Colors.teal,
       ),
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Text(
-              "Bienvenido $email",
-              style: TextStyle(
-                color: Colors.teal,
-                fontSize: 20,
-                fontWeight: FontWeight.bold,
-              ),
-              textAlign: TextAlign.center,
-            ),
-            SizedBox(
-              height: 50,
-            ),
-            ElevatedButton(
-              onPressed: () {
-                Navigator.pushNamed(context, '/UploadImage',
-                );
-              },
-              style: ElevatedButton.styleFrom(minimumSize: Size(250, 45)),
-              child: Text(
-                "Subir Imagen",
-                style: TextStyle(fontSize: 18),
-              ),
-            )
-          ],
-        ),
-      ),
+      body: RoutesNavBar(index: index),
     );
   }
 }

@@ -56,7 +56,7 @@ class LoginPageState extends State<LoginPage> {
         prefs.setString('token', token);
 
         if (!context.mounted) return;
-        Navigator.pushNamed(context, '/HomePage');
+        Navigator.pushNamed(context, '/Index');
         
       } else {
         if (!context.mounted) return;
@@ -68,6 +68,7 @@ class LoginPageState extends State<LoginPage> {
         );
       }
     } else {
+      // ignore: use_build_context_synchronously
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
           duration: const Duration(seconds: 2),
@@ -112,6 +113,7 @@ class LoginPageState extends State<LoginPage> {
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 8),
             child: TextFormField(
+              obscureText: true,
               controller: passwordController,
               decoration: const InputDecoration(
                 border: UnderlineInputBorder(),
