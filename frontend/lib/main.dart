@@ -25,12 +25,11 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Flutter Demo',
+      title: 'ProxiPyme',
       debugShowCheckedModeBanner: false,
       theme: ThemeData(primarySwatch: Colors.teal, useMaterial3: true),
       home: (token == null || JwtDecoder.isExpired(token) == true)
           ? MainPage()
-          // : IndexPage(token: token),
           : HomePage(token: token),
 
       // Rutas de la página

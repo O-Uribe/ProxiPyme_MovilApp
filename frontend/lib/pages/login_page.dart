@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
+import 'package:proxi_pyme/pages/home_page.dart';
 import 'dart:convert';
 import 'package:proxi_pyme/utils/constants.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
@@ -27,9 +28,9 @@ class LoginPageState extends State<LoginPage> {
     SharedPreferences prefs = await prefsFuture;
 
     // Xalo
-    // final url = Uri.parse('http://192.168.1.187:5000/api/users/login');
+    final url = Uri.parse('http://192.168.1.187:5000/api/users/login');
     // Naxo
-    final url = Uri.parse('http://192.168.0.129:5000/api/users/login');
+    //final url = Uri.parse('http://192.168.0.129:5000/api/users/login');
     //Railway
     //final url = Uri.parse(
     //'https://proxipymemovilapp-production.up.railway.app/api/users/login');
@@ -56,8 +57,14 @@ class LoginPageState extends State<LoginPage> {
         prefs.setString('token', token);
 
         if (!context.mounted) return;
-        Navigator.pushNamed(context, '/Index');
-        
+        //Navigator.pushNamed(context, '/Index', arguments: {'token': token});
+
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => HomePage(token: token),
+          ),
+        );
       } else {
         if (!context.mounted) return;
         ScaffoldMessenger.of(context).showSnackBar(

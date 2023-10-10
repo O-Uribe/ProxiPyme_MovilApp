@@ -12,16 +12,15 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  
   // Variables BottomNavigationBar
   int index = 0;
-  BottomNavigation ? myBottomNavigationBar;
-  
+  BottomNavigation? myBottomNavigationBar;
+
   // late String email;
 
   @override
   void initState() {
-    myBottomNavigationBar = BottomNavigation(indexActual: (i){
+    myBottomNavigationBar = BottomNavigation(indexActual: (i) {
       setState(() {
         index = i;
       });
@@ -32,15 +31,15 @@ class _HomePageState extends State<HomePage> {
 
   @override
   Widget build(BuildContext context) {
-     return Scaffold(
+    return Scaffold(
       bottomNavigationBar: myBottomNavigationBar,
       backgroundColor: Colors.teal.shade50,
       appBar: AppBar(
-        title: const Text("Inicio"),
+        title: const Text("ProxiPyme"),
         centerTitle: true,
         backgroundColor: Colors.teal,
       ),
-      body: RoutesNavBar(index: index),
+      body: RoutesNavBar(index: index, token: widget.token),
     );
   }
 }
