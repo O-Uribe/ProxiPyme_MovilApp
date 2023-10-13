@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 class BottomNavigation extends StatefulWidget {
-  final Function indexActual ;
+  final Function indexActual;
 
   const BottomNavigation({super.key, required this.indexActual});
 
@@ -17,32 +17,21 @@ class _BottomNavigationState extends State<BottomNavigation> {
     return BottomNavigationBar(
       // Mostrar contenido en el botón que corresponda
       currentIndex: index,
-      onTap: (int i){
+      onTap: (int i) {
         setState(() {
           index = i;
           widget.indexActual(i);
         });
       },
       type: BottomNavigationBarType.fixed,
-      
+
       // Íconos que van en el BottomNavigationBar
       items: [
+        BottomNavigationBarItem(icon: Icon(Icons.home), label: 'Inicio'),
+        BottomNavigationBarItem(icon: Icon(Icons.map), label: 'Mapa'),
+        BottomNavigationBarItem(icon: Icon(Icons.history), label: 'Actividad'),
         BottomNavigationBarItem(
-          icon: Icon(Icons.home),
-          label: 'Inicio'
-        ),
-        BottomNavigationBarItem(
-          icon: Icon(Icons.search),
-          label: 'Buscar'
-        ),
-        BottomNavigationBarItem(
-          icon: Icon(Icons.favorite),
-          label: 'Favoritos'
-        ),
-        BottomNavigationBarItem(
-          icon: Icon(Icons.settings),
-          label: 'Configuración'
-        ),
+            icon: Icon(Icons.settings), label: 'Configuración'),
       ],
     );
   }

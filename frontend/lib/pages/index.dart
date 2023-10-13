@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:jwt_decoder/jwt_decoder.dart';
 import 'dart:convert';
+import '../widgets/search.dart';
 
 class IndexPage extends StatefulWidget {
   final dynamic token;
@@ -14,7 +15,10 @@ class IndexPage extends StatefulWidget {
 class _IndexPageState extends State<IndexPage> {
   late String email;
   late String userId;
-  String? userName; // Variable para almacenar el nombre de usuario
+  String? userName;
+
+  String searchQuery = "";
+  List<String> searchResults = [];
 
   @override
   void initState() {
@@ -27,7 +31,6 @@ class _IndexPageState extends State<IndexPage> {
     fetchUserName(userId);
   }
 
-  // Función para realizar la solicitud a la API para obtener el nombre de usuario
   Future<void> fetchUserName(String userId) async {
     final url = Uri.parse('http://192.168.1.187:5000/api/users/');
 
@@ -52,32 +55,38 @@ class _IndexPageState extends State<IndexPage> {
     }
   }
 
+  void searchUsers(String query) {
+    setState(() {
+      searchQuery = query;
+      // Lógica de búsqueda de usuarios aquí, puedes usar `fetchUserName` con filtros.
+      // Actualiza `searchResults` con los resultados de la búsqueda.
+      // Ejemplo: searchResults = ['Usuario1', 'Usuario2', ...];
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.teal.shade50,
       body: Center(
         child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Text(
-              "Bienvenido $email",
-              style: TextStyle(
-                color: Colors.teal,
-                fontSize: 20,
-                fontWeight: FontWeight.bold,
-              ),
-              textAlign: TextAlign.center,
-            ),
-            SizedBox(height: 20),
-            if (userName != null)
-              Text(
-                "Nombre de Usuario: $userName",
+            Padding(
+              padding: const EdgeInsets.symmetric(vertical: 20.0),
+              child: Text(
+                "Hola $userName",
                 style: TextStyle(
                   color: Colors.teal,
-                  fontSize: 16,
+                  fontSize: 20,
+                  fontWeight: FontWeight.bold,
                 ),
                 textAlign: TextAlign.center,
+              ),
+            ),
+            UserSearchBar(onSearch: searchUsers),
+            if (searchResults.isNotEmpty)
+              Column(
+                children: searchResults.map((result) => Text(result)).toList(),
               ),
           ],
         ),
