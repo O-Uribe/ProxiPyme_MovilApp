@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 // import 'package:proxi_pyme/pages/home_page.dart';
 import 'package:proxi_pyme/pages/image_upload_page.dart';
 import 'package:proxi_pyme/pages/index.dart';
-import 'package:proxi_pyme/pages/p1.dart';
+import 'package:proxi_pyme/pages/map.dart';
 import 'package:proxi_pyme/pages/p2.dart';
 
 class RoutesNavBar extends StatelessWidget {
@@ -16,7 +16,7 @@ class RoutesNavBar extends StatelessWidget {
     List<Widget> listaPaginas = [
       // HomePage(token: token),
       IndexPage(token: token),
-      Page1(),
+      Map(),
       Page2(),
       ImageUploadPage()
     ];

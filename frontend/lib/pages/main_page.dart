@@ -24,6 +24,7 @@ class MainPage extends StatelessWidget {
         ),
         centerTitle: true,
         backgroundColor: Colors.teal,
+        automaticallyImplyLeading: false, // Botón volver atrás
       ),
       body: SingleChildScrollView(
         child: Column(

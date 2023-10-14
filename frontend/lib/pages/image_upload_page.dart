@@ -49,9 +49,6 @@ class ImageUploadPageState extends State<ImageUploadPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text('Subir Imagen a Cloudinary'),
-      ),
       body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
