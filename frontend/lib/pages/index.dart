@@ -72,12 +72,12 @@ class _IndexPageState extends State<IndexPage> {
         child: Column(
           children: [
             Padding(
-              padding: const EdgeInsets.symmetric(vertical: 20.0),
+              padding: const EdgeInsets.symmetric(vertical: 1.0),
               child: Text(
                 "Hola $userName",
                 style: TextStyle(
                   color: Colors.teal,
-                  fontSize: 20,
+                  fontSize: 35,
                   fontWeight: FontWeight.bold,
                 ),
                 textAlign: TextAlign.center,
@@ -89,56 +89,83 @@ class _IndexPageState extends State<IndexPage> {
                 children: searchResults.map((result) => Text(result)).toList(),
               ),
             Row(
-              mainAxisAlignment: MainAxisAlignment
-                  .spaceEvenly, 
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
-                GestureDetector(
+                CustomImageButton(
+                  imageAsset: 'assets/images/mapa.png',
+                  label: 'Mapa',
                   onTap: () {
                     Navigator.pushNamed(
                       context,
-                      '/UploadImage',
+                      '/Map',
                     );
                   },
-                  child: Container(
-                    width: 180,
-                    height: 100,
-                    decoration: BoxDecoration(
-                        image: DecorationImage(
-                          image: AssetImage(
-                              'assets/images/mapa.png'),
-                          fit: BoxFit.cover,
-                        ),
-                        borderRadius: BorderRadius.circular(4)),
-                    child: Text('Mapa',
-                        textAlign: TextAlign.center,
-                        style: TextStyle(color: Colors.white)),
-                  ),
                 ),
-                GestureDetector(
+                CustomImageButton(
+                  imageAsset: 'assets/images/ñandrejo.png',
+                  label: 'Categorías',
                   onTap: () {
                     Navigator.pushNamed(
                       context,
-                      '/UploadImage',
+                      '/Categories',
                     );
                   },
-                  child: Container(
-                    width: 180,
-                    height: 100,
-                    decoration: BoxDecoration(
-                        image: DecorationImage(
-                          image: AssetImage(
-                              'assets/images/ñandrejo.png'),
-                          fit: BoxFit.cover,
-                        ),
-                        borderRadius: BorderRadius.circular(4)),
-                    child: Text('Ñandrejo',
-                        textAlign: TextAlign.center,
-                        style: TextStyle(color: Colors.white)),
-                  ),
                 ),
               ],
             ),
           ],
+        ),
+      ),
+    );
+  }
+}
+
+class CustomImageButton extends StatelessWidget {
+  final String imageAsset;
+  final String label;
+  final Function onTap;
+
+  CustomImageButton({
+    required this.imageAsset,
+    required this.label,
+    required this.onTap,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return GestureDetector(
+      onTap: () => onTap(),
+      child: Container(
+        width: 180,
+        height: 100,
+        decoration: BoxDecoration(
+          image: DecorationImage(
+            image: AssetImage(imageAsset),
+            fit: BoxFit.cover,
+          ),
+          borderRadius: BorderRadius.circular(4),
+          boxShadow: [
+            BoxShadow(
+              color: Colors.grey,
+              blurRadius: 3,
+              offset: Offset(0, 2),
+            ),
+          ],
+          gradient: LinearGradient(
+            colors: [Colors.teal, Colors.tealAccent],
+            begin: Alignment.topLeft,
+            end: Alignment.bottomRight,
+          ),
+        ),
+        child: Center(
+          child: Text(
+            label,
+            style: TextStyle(
+              color: Colors.white,
+              fontSize: 24,
+              fontWeight: FontWeight.bold,
+            ),
+          ),
         ),
       ),
     );

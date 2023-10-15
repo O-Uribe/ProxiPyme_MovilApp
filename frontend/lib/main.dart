@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:jwt_decoder/jwt_decoder.dart';
+import 'package:proxi_pyme/pages/categories.dart';
 import 'package:proxi_pyme/pages/home_page.dart';
-// import 'package:proxi_pyme/pages/index.dart';
 import 'package:proxi_pyme/pages/login_page.dart';
 import 'package:proxi_pyme/pages/register_page.dart';
 import 'package:proxi_pyme/pages/main_page.dart';
 import 'package:proxi_pyme/pages/image_upload_page.dart';
+import 'package:proxi_pyme/pages/map.dart';
 
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -38,7 +39,9 @@ class MyApp extends StatelessWidget {
         '/Index': (context) => HomePage(token: token),
         '/Login': (context) => LoginPage(),
         '/Register': (context) => RegisterPage(),
-        '/UploadImage': (context) => ImageUploadPage()
+        '/UploadImage': (context) => ImageUploadPage(),
+        '/Map': (context) => Map(),
+        '/Categories': (context) => CategoriesPage()
       },
     );
   }
