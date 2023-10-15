@@ -30,7 +30,7 @@ class LoginPageState extends State<LoginPage> {
     // Xalo
     // final url = Uri.parse('http://192.168.1.187:5000/api/users/login');
     // Naxo
-    final url = Uri.parse('http://192.168.1.204:5000/api/users/login');
+    final url = Uri.parse('http://192.168.0.129:5000/api/users/login');
     //Railway
     //final url = Uri.parse(
     //'https://proxipymemovilapp-production.up.railway.app/api/users/login');

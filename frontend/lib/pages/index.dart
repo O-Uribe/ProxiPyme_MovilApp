@@ -88,6 +88,56 @@ class _IndexPageState extends State<IndexPage> {
               Column(
                 children: searchResults.map((result) => Text(result)).toList(),
               ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment
+                  .spaceEvenly, 
+              children: [
+                GestureDetector(
+                  onTap: () {
+                    Navigator.pushNamed(
+                      context,
+                      '/UploadImage',
+                    );
+                  },
+                  child: Container(
+                    width: 180,
+                    height: 100,
+                    decoration: BoxDecoration(
+                        image: DecorationImage(
+                          image: AssetImage(
+                              'assets/images/mapa.png'),
+                          fit: BoxFit.cover,
+                        ),
+                        borderRadius: BorderRadius.circular(4)),
+                    child: Text('Mapa',
+                        textAlign: TextAlign.center,
+                        style: TextStyle(color: Colors.white)),
+                  ),
+                ),
+                GestureDetector(
+                  onTap: () {
+                    Navigator.pushNamed(
+                      context,
+                      '/UploadImage',
+                    );
+                  },
+                  child: Container(
+                    width: 180,
+                    height: 100,
+                    decoration: BoxDecoration(
+                        image: DecorationImage(
+                          image: AssetImage(
+                              'assets/images/ñandrejo.png'),
+                          fit: BoxFit.cover,
+                        ),
+                        borderRadius: BorderRadius.circular(4)),
+                    child: Text('Ñandrejo',
+                        textAlign: TextAlign.center,
+                        style: TextStyle(color: Colors.white)),
+                  ),
+                ),
+              ],
+            ),
           ],
         ),
       ),
