@@ -17,7 +17,7 @@ class _MapState extends State<Map> {
   @override
   void initState() {
     super.initState();
-    currentLocation = LatLng(-38.7307, -72.60022);
+    currentLocation = LatLng(-38.7370,-72.5788);
   }
 
   void getCurrentPosition() async {
@@ -61,6 +61,20 @@ class _MapState extends State<Map> {
               TileLayer(
                 urlTemplate: 'https://tile.openstreetmap.org/{z}/{x}/{y}.png',
                 userAgentPackageName: 'com.example.app',
+              ),
+              MarkerLayer(
+                markers: [
+                  Marker(
+                    point: currentLocation,
+                    width: 80, 
+                    height: 80,
+                    child: Icon(
+                      Icons.location_on, // Puedes personalizar el icono como desees
+                      size: 50,
+                      color: Colors.red, // Cambia el color del marcador
+                    ),
+                  ),
+                ],
               ),
             ],
           ),
