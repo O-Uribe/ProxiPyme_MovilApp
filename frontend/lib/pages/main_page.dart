@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:proxi_pyme/utils/constants.dart';
 
 import 'package:cloudinary_flutter/cloudinary_context.dart';
-import 'package:cloudinary_flutter/image/cld_image.dart';
+// import 'package:cloudinary_flutter/image/cld_image.dart';
 import 'package:cloudinary_url_gen/cloudinary.dart';
 
 class MainPage extends StatelessWidget {
@@ -63,7 +63,7 @@ class MainPage extends StatelessWidget {
   Widget construirLogo() {
     return Padding(
       padding: const EdgeInsets.all(30.0),
-      child: CldImageWidget(publicId: "logo"),
+      child: Image.asset('assets/images/logo.png'),
     );
   }
 

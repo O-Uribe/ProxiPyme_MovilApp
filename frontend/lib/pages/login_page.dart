@@ -57,7 +57,7 @@ class LoginPageState extends State<LoginPage> {
         prefs.setString('token', token);
 
         if (!context.mounted) return;
-        //Navigator.pushNamed(context, '/Index', arguments: {'token': token});
+        // Navigator.pushNamed(context, '/Index', arguments: {'token': token});
 
         Navigator.push(
           context,

@@ -32,7 +32,7 @@ class _IndexPageState extends State<IndexPage> {
   }
 
   Future<void> fetchUserName(String userId) async {
-    final url = Uri.parse('http://192.168.1.187:5000/api/users/');
+    final url = Uri.parse('https://proxipymemovilapp-production.up.railway.app/api/users/');
 
     try {
       final response = await http.get(url);
