@@ -108,6 +108,7 @@ router.post('/api/users/register', async (req, res) => {
             } = req.body;
 
             const newUser = new Usuarios({
+                tipoUsuario,
                 nombreUsuario,
                 correo,
                 contraseña: hashedPassword,
