@@ -1,0 +1,9 @@
+# Ignorar carpetas generadas
+node_modules/
+dist/
+coverage/
+.env
+
+# Ignorar archivos generados
+package-lock.json
+yarn.lock
