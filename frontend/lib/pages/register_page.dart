@@ -15,8 +15,11 @@ class _RegisterPageState extends State<RegisterPage> {
   TextEditingController usernameController = TextEditingController();
   TextEditingController emailController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
-  String userType = 'Cliente'; // Valor predeterminado: Cliente
-  String? selectedImage; // Ruta de la imagen seleccionada
+
+  final picker = ImagePicker();
+  String userType = 'Cliente';
+  String imageUrl = '';
+  File? _image;
 
   // Campos adicionales para usuario Pyme
   TextEditingController pymeNameController = TextEditingController();
@@ -24,7 +27,6 @@ class _RegisterPageState extends State<RegisterPage> {
   TextEditingController pymeManagerController = TextEditingController();
   TextEditingController pymeDescriptionController = TextEditingController();
 
-  // Variable para controlar la visibilidad del formulario de pyme
   bool showPymeForm = false;
 
   Future<void> registerUser(
@@ -53,7 +55,7 @@ class _RegisterPageState extends State<RegisterPage> {
         'direccionPyme': pymeAddress,
         'encargadoPyme': pymeManager,
         'descripcionPyme': pymeDescription,
-        'logoPyme': logoPath, // Envía la ruta de la imagen como dato
+        'logoPyme': logoPath,
       }),
     );
 
@@ -64,13 +66,29 @@ class _RegisterPageState extends State<RegisterPage> {
     }
   }
 
-  Future<void> _pickImage() async {
-    final pickedFile =
-        await ImagePicker().pickImage(source: ImageSource.gallery);
+  Future<void> _uploadImage() async {
+    final pickedFile = await picker.pickImage(source: ImageSource.gallery);
+    var request = http.MultipartRequest(
+      'POST',
+      Uri.parse('https://proxipymemovilapp-production.up.railway.app/upload'),
+    );
+
     if (pickedFile != null) {
       setState(() {
-        selectedImage = pickedFile.path;
+        _image = File(pickedFile.path);
       });
+
+      request.files
+          .add(await http.MultipartFile.fromPath('image', _image!.path));
+      try {
+        var response = await request.send();
+        if (response.statusCode == 200) {
+          var responseBody = json.decode(await response.stream.bytesToString());
+          imageUrl = responseBody["data"]["url"];
+        }
+      } catch (e) {
+        print('Error al subir la imagen: $e');
+      }
     }
   }
 
@@ -170,14 +188,18 @@ class _RegisterPageState extends State<RegisterPage> {
                   ),
                 ),
               ),
-              // Botón para seleccionar una imagen
               ElevatedButton(
-                onPressed: _pickImage,
+                onPressed: _uploadImage,
                 child: Text('Seleccionar Logo'),
               ),
-              if (selectedImage !=
-                  null) // Muestra la imagen seleccionada si hay una
-                Image.file(File(selectedImage!), height: 100),
+              _image == null
+                  ? Text('Selecciona una imagen')
+                  : Image.file(
+                      _image!,
+                      width: 150.0,
+                      height: 150.0,
+                      fit: BoxFit.contain,
+                    ),
               Padding(
                 padding:
                     const EdgeInsets.symmetric(horizontal: 20, vertical: 8),
@@ -210,20 +232,18 @@ class _RegisterPageState extends State<RegisterPage> {
                 String? pymeAddress;
                 String? pymeManager;
                 String? pymeDescription;
-                String? logoPath; // Ruta de la imagen seleccionada
                 if (userType == 'Pyme') {
                   pymeName = pymeNameController.text;
                   pymeAddress = pymeAddressController.text;
                   pymeManager = pymeManagerController.text;
                   pymeDescription = pymeDescriptionController.text;
-                  logoPath = selectedImage; // Asigna la ruta de la imagen
                 }
                 registerUser(username, email, password, userType,
                     pymeName: pymeName,
                     pymeAddress: pymeAddress,
                     pymeManager: pymeManager,
                     pymeDescription: pymeDescription,
-                    logoPath: logoPath); // Pasa la ruta de la imagen
+                    logoPath: imageUrl);
 
                 Navigator.pop(context);
               },
@@ -238,10 +258,4 @@ class _RegisterPageState extends State<RegisterPage> {
       ),
     );
   }
-}
-
-void main() {
-  runApp(MaterialApp(
-    home: RegisterPage(),
-  ));
 }

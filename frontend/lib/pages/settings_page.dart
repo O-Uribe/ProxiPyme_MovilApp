@@ -1,14 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:image_picker/image_picker.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'dart:io';
 
-class ImageUploadPage extends StatefulWidget {
+import 'package:proxi_pyme/pages/main_page.dart';
+
+class SettingsPage extends StatefulWidget {
   @override
-  ImageUploadPageState createState() => ImageUploadPageState();
+  SettingsPageState createState() => SettingsPageState();
 }
 
-class ImageUploadPageState extends State<ImageUploadPage> {
+class SettingsPageState extends State<SettingsPage> {
   final picker = ImagePicker();
   File? _image;
 
@@ -27,7 +30,6 @@ class ImageUploadPageState extends State<ImageUploadPage> {
       return;
     }
 
-    // var request = http.MultipartRequest('POST', Uri.parse('http://192.168.0.129/upload'));
     var request = http.MultipartRequest(
         'POST',
         Uri.parse(
@@ -46,9 +48,17 @@ class ImageUploadPageState extends State<ImageUploadPage> {
     }
   }
 
+  Future<void> _logout() async {
+    SharedPreferences preferences = await SharedPreferences.getInstance();
+    await preferences.remove('token');
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        title: Text('Configuración de Usuario'),
+      ),
       body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
@@ -64,6 +74,19 @@ class ImageUploadPageState extends State<ImageUploadPage> {
             ElevatedButton(
               onPressed: _uploadImage,
               child: Text('Subir Imagen'),
+            ),
+            SizedBox(height: 20),
+            ElevatedButton(
+              onPressed: () {
+                _logout();
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => MainPage(),
+                  ),
+                );
+              },
+              child: Text('Cerrar Sesión'),
             ),
           ],
         ),

@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-// import 'package:jwt_decoder/jwt_decoder.dart';
 import 'package:proxi_pyme/routes/routes_nav_bar.dart';
 import 'package:proxi_pyme/widgets/navigation_bar.dart';
 

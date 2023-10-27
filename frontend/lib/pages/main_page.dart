@@ -40,7 +40,6 @@ class MainPage extends StatelessWidget {
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          construirTextoBienvenida(),
           const SizedBox(height: 20),
           construirLogo(),
           construirBotonInicio(context),
@@ -48,15 +47,6 @@ class MainPage extends StatelessWidget {
           construirBotonRegistro(context),
         ],
       ),
-    );
-  }
-
-  Widget construirTextoBienvenida() {
-    return Text(
-      "Bienvenido a ProxiPyme",
-      style: TextStyle(
-          color: Colors.teal, fontSize: 40, fontWeight: FontWeight.bold),
-      textAlign: TextAlign.center,
     );
   }
 

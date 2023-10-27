@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
-// import 'package:proxi_pyme/pages/home_page.dart';
-import 'package:proxi_pyme/pages/image_upload_page.dart';
-import 'package:proxi_pyme/pages/index.dart';
-import 'package:proxi_pyme/pages/map.dart';
-import 'package:proxi_pyme/pages/p2.dart';
+import 'package:proxi_pyme/pages/settings_page.dart';
+import 'package:proxi_pyme/pages/index_page.dart';
+import 'package:proxi_pyme/pages/map_page.dart';
+import 'package:proxi_pyme/pages/activity_page.dart';
 
 class RoutesNavBar extends StatelessWidget {
   final int index;
@@ -14,11 +13,10 @@ class RoutesNavBar extends StatelessWidget {
   Widget build(BuildContext context) {
     // Páginas que serán mostradas en el BottomNavigationBar
     List<Widget> listaPaginas = [
-      // HomePage(token: token),
       IndexPage(token: token),
       Map(),
-      Page2(),
-      ImageUploadPage()
+      Activity(),
+      SettingsPage()
     ];
 
     return listaPaginas[index];
