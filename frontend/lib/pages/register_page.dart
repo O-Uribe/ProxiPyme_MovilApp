@@ -3,6 +3,8 @@ import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'package:image_picker/image_picker.dart';
 import 'dart:io';
+import 'package:google_places_flutter/google_places_flutter.dart';
+import 'package:google_places_flutter/model/prediction.dart';
 
 class RegisterPage extends StatefulWidget {
   const RegisterPage({Key? key}) : super(key: key);
@@ -12,14 +14,16 @@ class RegisterPage extends StatefulWidget {
 }
 
 class _RegisterPageState extends State<RegisterPage> {
+  // Variables para subir imagen y obtener Dirección
+  final picker = ImagePicker();
+  String userType = 'Cliente', imageUrl = '', latitud = '', longitud = '';
+  File? _image;
+  bool showPymeForm = false;
+
+  // Campos para usuario Cliente
   TextEditingController usernameController = TextEditingController();
   TextEditingController emailController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
-
-  final picker = ImagePicker();
-  String userType = 'Cliente';
-  String imageUrl = '';
-  File? _image;
 
   // Campos adicionales para usuario Pyme
   TextEditingController pymeNameController = TextEditingController();
@@ -27,15 +31,12 @@ class _RegisterPageState extends State<RegisterPage> {
   TextEditingController pymeManagerController = TextEditingController();
   TextEditingController pymeDescriptionController = TextEditingController();
 
-  bool showPymeForm = false;
-
-  Future<void> registerUser(
-      String username, String email, String password, String userType,
+  Future<void> registerUser(String username, email, password, userType,
       {String? pymeName,
-      String? pymeAddress,
-      String? pymeManager,
-      String? pymeDescription,
-      String? logoPath}) async {
+      pymeAddress,
+      pymeManager,
+      pymeDescription,
+      logoPath}) async {
     //final url = Uri.parse('http://192.168.1.187:5000/api/users/register');
     //final url = Uri.parse('http://192.168.0.129:5000/api/users/register');
     final url = Uri.parse(
@@ -177,17 +178,7 @@ class _RegisterPageState extends State<RegisterPage> {
                   ),
                 ),
               ),
-              Padding(
-                padding:
-                    const EdgeInsets.symmetric(horizontal: 20, vertical: 8),
-                child: TextFormField(
-                  controller: pymeAddressController,
-                  decoration: const InputDecoration(
-                    border: UnderlineInputBorder(),
-                    labelText: 'Dirección de la Pyme',
-                  ),
-                ),
-              ),
+              direccion(),
               ElevatedButton(
                 onPressed: _uploadImage,
                 child: Text('Seleccionar Logo'),
@@ -234,7 +225,8 @@ class _RegisterPageState extends State<RegisterPage> {
                 String? pymeDescription;
                 if (userType == 'Pyme') {
                   pymeName = pymeNameController.text;
-                  pymeAddress = pymeAddressController.text;
+                  //pymeAddress = pymeAddressController.text;
+                  pymeAddress = '$latitud,$longitud';
                   pymeManager = pymeManagerController.text;
                   pymeDescription = pymeDescriptionController.text;
                 }
@@ -255,6 +247,33 @@ class _RegisterPageState extends State<RegisterPage> {
             )
           ],
         ),
+      ),
+    );
+  }
+
+  direccion() {
+    return Container(
+      padding: EdgeInsets.symmetric(horizontal: 20, vertical: 8),
+      child: GooglePlaceAutoCompleteTextField(
+        textEditingController: pymeAddressController,
+        googleAPIKey: "AIzaSyC4l_K_-n3awrdP66-77DHDbKfc6SpKxP8",
+        inputDecoration: InputDecoration(
+          hintText: "Indica la dirección de tu Pyme",
+          border: InputBorder.none,
+        ),
+        debounceTime: 400,
+        countries: ["CL"],
+        isLatLngRequired: true,
+        getPlaceDetailWithLatLng: (Prediction prediction) async {
+          latitud = prediction.lat!;
+          longitud = prediction.lng!;
+        },
+        itemClick: (Prediction prediction) {
+          pymeAddressController.text = prediction.description ?? "";
+          pymeAddressController.selection = TextSelection.fromPosition(
+              TextPosition(offset: prediction.description?.length ?? 0));
+        },
+        isCrossBtnShown: true,
       ),
     );
   }

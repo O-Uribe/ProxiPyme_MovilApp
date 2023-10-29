@@ -7,7 +7,6 @@ import 'package:proxi_pyme/pages/register_page.dart';
 import 'package:proxi_pyme/pages/main_page.dart';
 import 'package:proxi_pyme/pages/settings_page.dart';
 import 'package:proxi_pyme/pages/map_page.dart';
-
 import 'package:shared_preferences/shared_preferences.dart';
 
 void main() async {
