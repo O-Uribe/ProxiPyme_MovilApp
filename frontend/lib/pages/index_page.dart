@@ -3,6 +3,7 @@ import 'package:http/http.dart' as http;
 import 'package:jwt_decoder/jwt_decoder.dart';
 import 'dart:convert';
 import '../widgets/search.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 
 class IndexPage extends StatefulWidget {
   final dynamic token;
@@ -13,10 +14,9 @@ class IndexPage extends StatefulWidget {
 }
 
 class _IndexPageState extends State<IndexPage> {
-  late String email;
   late String userId;
-  String? userName;
 
+  Map<String, dynamic>? userData;
   String searchQuery = "";
   List<String> searchResults = [];
 
@@ -25,15 +25,14 @@ class _IndexPageState extends State<IndexPage> {
     super.initState();
     Map<String, dynamic>? jwtDecodedToken = JwtDecoder.decode(widget.token);
 
-    email = jwtDecodedToken['correo'];
     userId = jwtDecodedToken['userId'];
 
-    fetchUserName(userId);
+    fetchUser(userId);
   }
 
-  Future<void> fetchUserName(String userId) async {
-    final url = Uri.parse('https://proxipymemovilapp-production.up.railway.app/api/users/');
-
+  Future<void> fetchUser(String userId) async {
+    await dotenv.load(fileName: '.env');
+    final url = Uri.parse(dotenv.env['URL_USERS'] ?? '');
     try {
       final response = await http.get(url);
 
@@ -43,7 +42,7 @@ class _IndexPageState extends State<IndexPage> {
         for (var usuario in jsonData) {
           if (usuario['_id'] == userId) {
             setState(() {
-              userName = usuario['nombreUsuario'];
+              userData = usuario;
             });
           }
         }
@@ -71,17 +70,21 @@ class _IndexPageState extends State<IndexPage> {
       body: Center(
         child: Column(
           children: [
-            Padding(
-              padding: const EdgeInsets.symmetric(vertical: 1.0),
-              child: Text(
-                "Hola $userName",
-                style: TextStyle(
-                  color: Colors.teal,
-                  fontSize: 35,
-                  fontWeight: FontWeight.bold,
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Text(
+                  "Hola ${userData?['nombreUsuario']}",
+                  style: TextStyle(
+                    color: Colors.teal,
+                    fontSize: 35,
+                    fontWeight: FontWeight.bold,
+                  ),
+                  textAlign: TextAlign.center,
                 ),
-                textAlign: TextAlign.center,
-              ),
+                SizedBox(width: 20),
+                IconoLogo(logoUrl: userData?['logoPyme']),
+              ],
             ),
             UserSearchBar(onSearch: searchUsers),
             if (searchResults.isNotEmpty)
@@ -116,6 +119,44 @@ class _IndexPageState extends State<IndexPage> {
           ],
         ),
       ),
+    );
+  }
+}
+
+class IconoLogo extends StatelessWidget {
+  final String? logoUrl;
+
+  const IconoLogo({Key? key, this.logoUrl}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      width: 50,
+      height: 50,
+      decoration: BoxDecoration(
+        shape: BoxShape.circle, // Esto hace que el contenedor sea circular
+        border: Border.all(
+          color: Colors.teal, // Color del borde
+          width: 2.0, // Ancho del borde
+        ),
+      ),
+      child: logoUrl != null
+          ? ClipOval(
+              child: Image.network(
+                logoUrl!,
+                width: 50,
+                height: 50,
+                fit: BoxFit.cover, // Ajusta la imagen dentro del círculo
+              ),
+            )
+          : ClipOval(
+              child: Image.asset(
+                'assets/images/perfil.png',
+                width: 50,
+                height: 50,
+                fit: BoxFit.cover,
+              ),
+            ),
     );
   }
 }

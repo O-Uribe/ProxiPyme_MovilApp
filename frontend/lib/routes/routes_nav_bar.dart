@@ -11,7 +11,6 @@ class RoutesNavBar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // Páginas que serán mostradas en el BottomNavigationBar
     List<Widget> listaPaginas = [
       IndexPage(token: token),
       Map(),
