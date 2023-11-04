@@ -5,6 +5,7 @@ import 'package:image_picker/image_picker.dart';
 import 'dart:io';
 import 'package:google_places_flutter/google_places_flutter.dart';
 import 'package:google_places_flutter/model/prediction.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 
 class RegisterPage extends StatefulWidget {
   const RegisterPage({Key? key}) : super(key: key);
@@ -16,7 +17,11 @@ class RegisterPage extends StatefulWidget {
 class _RegisterPageState extends State<RegisterPage> {
   // Variables para subir imagen y obtener Dirección
   final picker = ImagePicker();
-  String userType = 'Cliente', imageUrl = '', latitud = '', longitud = '';
+  String userType = 'Cliente',
+      imageUrl = '',
+      latitud = '',
+      longitud = '',
+      gooogleApiKey = '';
   File? _image;
   bool showPymeForm = false;
 
@@ -37,10 +42,11 @@ class _RegisterPageState extends State<RegisterPage> {
       pymeManager,
       pymeDescription,
       logoPath}) async {
-    //final url = Uri.parse('http://192.168.1.187:5000/api/users/register');
-    //final url = Uri.parse('http://192.168.0.129:5000/api/users/register');
-    final url = Uri.parse(
-        'https://proxipymemovilapp-production.up.railway.app/api/users/register');
+    await dotenv.load(fileName: '.env');
+
+    gooogleApiKey = dotenv.env['GOOGLE_API_KEY'] ?? '';
+
+    final url = Uri.parse(dotenv.env['URL_REGISTER'] ?? '');
 
     final response = await http.post(
       url,
@@ -256,7 +262,7 @@ class _RegisterPageState extends State<RegisterPage> {
       padding: EdgeInsets.symmetric(horizontal: 20, vertical: 8),
       child: GooglePlaceAutoCompleteTextField(
         textEditingController: pymeAddressController,
-        googleAPIKey: "AIzaSyC4l_K_-n3awrdP66-77DHDbKfc6SpKxP8",
+        googleAPIKey: gooogleApiKey,
         inputDecoration: InputDecoration(
           hintText: "Indica la dirección de tu Pyme",
           border: InputBorder.none,

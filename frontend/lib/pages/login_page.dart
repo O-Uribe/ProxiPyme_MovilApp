@@ -5,6 +5,7 @@ import 'dart:convert';
 import 'package:proxi_pyme/utils/constants.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({Key? key}) : super(key: key);
@@ -27,13 +28,9 @@ class LoginPageState extends State<LoginPage> {
   void loginUser() async {
     SharedPreferences prefs = await prefsFuture;
 
-    // Xalo
-    // final url = Uri.parse('http://192.168.1.187:5000/api/users/login');
-    // Naxo
-    //final url = Uri.parse('http://192.168.0.129:5000/api/users/login');
-    //Railway
-    final url = Uri.parse(
-        'https://proxipymemovilapp-production.up.railway.app/api/users/login');
+    await dotenv.load(fileName: '.env');
+
+    final url = Uri.parse(dotenv.env['URL_LOGIN'] ?? '');
 
     if (emailController.text.isNotEmpty && passwordController.text.isNotEmpty) {
       final response = await http.post(
