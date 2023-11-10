@@ -5,15 +5,15 @@ import 'dart:convert';
 import '../widgets/search.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 
-class IndexPage extends StatefulWidget {
+class IndexPymePage extends StatefulWidget {
   final dynamic token;
-  const IndexPage({@required this.token, Key? key}) : super(key: key);
+  const IndexPymePage({@required this.token, Key? key}) : super(key: key);
 
   @override
-  State<IndexPage> createState() => _IndexPageState();
+  State<IndexPymePage> createState() => _IndexPymePageState();
 }
 
-class _IndexPageState extends State<IndexPage> {
+class _IndexPymePageState extends State<IndexPymePage> {
   late String userId;
 
   Map<String, dynamic>? userData;
@@ -74,7 +74,7 @@ class _IndexPageState extends State<IndexPage> {
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 Text(
-                  "Hola ${userData?['nombreUsuario']}",
+                  "XDDD ${userData?['nombreUsuario']}",
                   style: TextStyle(
                     color: Colors.teal,
                     fontSize: 35,

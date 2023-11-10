@@ -11,11 +11,8 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  // Variables BottomNavigationBar
   int index = 0;
   BottomNavigation? myBottomNavigationBar;
-
-  // late String email;
 
   @override
   void initState() {

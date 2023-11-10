@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:jwt_decoder/jwt_decoder.dart';
 import 'package:proxi_pyme/pages/settings_page.dart';
-import 'package:proxi_pyme/pages/index_page.dart';
 import 'package:proxi_pyme/pages/map_page.dart';
 import 'package:proxi_pyme/pages/activity_page.dart';
+import 'package:proxi_pyme/pages/index_pyme_page.dart';
+import 'package:proxi_pyme/pages/index_user_page.dart';
 
 class RoutesNavBar extends StatelessWidget {
   final int index;
@@ -11,13 +13,22 @@ class RoutesNavBar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    List<Widget> listaPaginas = [
-      IndexPage(token: token),
-      Map(),
-      Activity(),
-      SettingsPage()
-    ];
+    var decodedToken = JwtDecoder.decode(token);
+    String userType = decodedToken['userType'];
+    if (token.isNotEmpty && index == 0) {
+      if (userType == 'Cliente') {
+        return IndexUserPage(token: token);
+      } else if (userType == 'Pyme') {
+        return IndexPymePage(token: token);
+      }
+    } else if (index == 1) {
+      return Map();
+    } else if (index == 2) {
+      return Activity();
+    } else if (index == 3) {
+      return SettingsPage();
+    }
 
-    return listaPaginas[index];
+    return Container(); // Puedes manejar otros índices según tus necesidades
   }
 }

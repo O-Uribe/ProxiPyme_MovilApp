@@ -26,7 +26,7 @@ router.post('/api/users/login', async (req, res) => {
         // Comparar la contraseña ingresada con la contraseña almacenada en la base de datos
         const passwordMatch = await bcrypt.compare(contraseña, user.contraseña);
         if (passwordMatch) {
-            const token = jwt.sign({ userId: user._id, correo: user.correo}, 'taller_IV', { expiresIn: '1h' });
+            const token = jwt.sign({ userId: user._id, userType: user.tipoUsuario}, 'taller_IV', { expiresIn: '1h' });
             res.status(200).json({ status:true,token:token});
         } else {
             res.status(401).json({ error: 'Credenciales incorrectas' });
@@ -37,37 +37,6 @@ router.post('/api/users/login', async (req, res) => {
         res.status(500).json({ error: 'Error en el servidor' });
     }
   });
-
-
-// Ruta para registrar un nuevo usuario
-// router.post('/api/users/register', async (req, res) => {
-//     try {
-//         const { nombreUsuario, correo, contraseña } = req.body;
-            
-//         if (!validator.isEmail(correo)) {
-//             return res.status(400).json({ error: 'El correo electrónico no es válido' });
-//         }
-//         // Verificar si el correo electrónico ya está en uso
-//         const existente = await Usuarios.findOne({ correo });
-//         if (existente) {
-//             return res.status(400).json({ error: 'El correo electrónico ya está registrado' });
-//         }
-//         // Encriptar la contraseña
-//         const hashedPassword = await bcrypt.hash(contraseña, 10);
-
-//         //Crea un nuevo usuario
-//         const newUser = new Usuarios({
-//             nombreUsuario,
-//             correo,
-//             contraseña: hashedPassword
-//         });
-//         await newUser.save();
-//         res.status(201).json({ message: 'Usuario registrado con éxito' });
-
-//     } catch (error) {
-//         res.status(400).json({ message: error.message });
-//     }
-// });
 
 // Ruta para registrar un nuevo usuario
 router.post('/api/users/register', async (req, res) => {
