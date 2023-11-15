@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:jwt_decoder/jwt_decoder.dart';
 import 'dart:convert';
-import '../widgets/search.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 
 class IndexPymePage extends StatefulWidget {
@@ -74,23 +73,19 @@ class _IndexPymePageState extends State<IndexPymePage> {
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 Text(
-                  "XDDD ${userData?['nombreUsuario']}",
+                  " Bienvenido: \n ${userData?['encargadoPyme']}",
                   style: TextStyle(
                     color: Colors.teal,
-                    fontSize: 35,
+                    fontSize: 20,
                     fontWeight: FontWeight.bold,
                   ),
                   textAlign: TextAlign.center,
                 ),
-                SizedBox(width: 20),
+                SizedBox(width: 15),
                 IconoLogo(logoUrl: userData?['logoPyme']),
               ],
             ),
-            UserSearchBar(onSearch: searchUsers),
-            if (searchResults.isNotEmpty)
-              Column(
-                children: searchResults.map((result) => Text(result)).toList(),
-              ),
+            SizedBox(height: 20),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
@@ -105,8 +100,8 @@ class _IndexPymePageState extends State<IndexPymePage> {
                   },
                 ),
                 CustomImageButton(
-                  imageAsset: 'assets/images/ñandrejo.png',
-                  label: 'Categorías',
+                  imageAsset: 'assets/images/locales.png',
+                  label: 'Productos',
                   onTap: () {
                     Navigator.pushNamed(
                       context,
@@ -210,5 +205,14 @@ class CustomImageButton extends StatelessWidget {
         ),
       ),
     );
+  }
+}
+
+class Productos extends StatelessWidget {
+  const Productos({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Container();
   }
 }

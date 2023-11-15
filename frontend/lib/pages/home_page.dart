@@ -31,7 +31,7 @@ class _HomePageState extends State<HomePage> {
       bottomNavigationBar: myBottomNavigationBar,
       backgroundColor: Colors.teal.shade50,
       appBar: AppBar(
-        title: const Text("ProxiPyme"),
+        title: const Text("Menú principal"),
         centerTitle: true,
         backgroundColor: Colors.teal,
       ),

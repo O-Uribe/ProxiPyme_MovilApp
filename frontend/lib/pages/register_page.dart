@@ -21,7 +21,7 @@ class _RegisterPageState extends State<RegisterPage> {
       imageUrl = '',
       latitud = '',
       longitud = '',
-      gooogleApiKey = '';
+      gooogleApiKey = dotenv.env['GOOGLE_API_KEY'] ?? '';
   File? _image;
   bool showPymeForm = false;
 
@@ -43,8 +43,6 @@ class _RegisterPageState extends State<RegisterPage> {
       pymeDescription,
       logoPath}) async {
     await dotenv.load(fileName: '.env');
-
-    gooogleApiKey = dotenv.env['GOOGLE_API_KEY'] ?? '';
 
     final url = Uri.parse(dotenv.env['URL_REGISTER'] ?? '');
 
