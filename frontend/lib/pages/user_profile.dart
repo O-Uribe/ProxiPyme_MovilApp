@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:proxi_pyme/pages/index_pyme_page.dart';
+import 'package:proxi_pyme/pages/index_user_page.dart';
 
 class UserProfile extends StatefulWidget {
   const UserProfile({super.key});
@@ -18,7 +19,6 @@ class _UserProfileState extends State<UserProfile> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              // **Profile picture section**
               const SizedBox(height: 32.0),
               Center(
                 child: Container(

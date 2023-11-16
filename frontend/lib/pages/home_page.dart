@@ -33,7 +33,7 @@ class _HomePageState extends State<HomePage> {
       appBar: AppBar(
         title: const Text("Menú principal"),
         centerTitle: true,
-        backgroundColor: Colors.teal,
+        backgroundColor: Color.fromARGB(255, 26, 101, 158),
       ),
       body: RoutesNavBar(index: index, token: widget.token),
     );

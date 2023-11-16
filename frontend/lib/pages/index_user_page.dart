@@ -73,17 +73,17 @@ class _IndexUserPageState extends State<IndexUserPage> {
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
+                SizedBox(width: 20),
                 Text(
                   "Hola ${userData?['nombreUsuario']}",
                   style: TextStyle(
                     color: Colors.teal,
-                    fontSize: 35,
+                    fontSize: 20,
                     fontWeight: FontWeight.bold,
                   ),
                   textAlign: TextAlign.center,
                 ),
                 SizedBox(width: 20),
-                IconoLogo(logoUrl: userData?['logoPyme']),
               ],
             ),
             UserSearchBar(onSearch: searchUsers),
@@ -93,70 +93,10 @@ class _IndexUserPageState extends State<IndexUserPage> {
               ),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              children: [
-                CustomImageButton(
-                  imageAsset: 'assets/images/mapa.png',
-                  label: 'Mapa',
-                  onTap: () {
-                    Navigator.pushNamed(
-                      context,
-                      '/Map',
-                    );
-                  },
-                ),
-                CustomImageButton(
-                  imageAsset: 'assets/images/ñandrejo.png',
-                  label: 'Categorías',
-                  onTap: () {
-                    Navigator.pushNamed(
-                      context,
-                      '/Categories',
-                    );
-                  },
-                ),
-              ],
             ),
           ],
         ),
       ),
-    );
-  }
-}
-
-class IconoLogo extends StatelessWidget {
-  final String? logoUrl;
-
-  const IconoLogo({Key? key, this.logoUrl}) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      width: 50,
-      height: 50,
-      decoration: BoxDecoration(
-        shape: BoxShape.circle, // Esto hace que el contenedor sea circular
-        border: Border.all(
-          color: Colors.teal, // Color del borde
-          width: 2.0, // Ancho del borde
-        ),
-      ),
-      child: logoUrl != null
-          ? ClipOval(
-              child: Image.network(
-                logoUrl!,
-                width: 50,
-                height: 50,
-                fit: BoxFit.cover, // Ajusta la imagen dentro del círculo
-              ),
-            )
-          : ClipOval(
-              child: Image.asset(
-                'assets/images/perfil.png',
-                width: 50,
-                height: 50,
-                fit: BoxFit.cover,
-              ),
-            ),
     );
   }
 }

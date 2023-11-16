@@ -14,12 +14,14 @@ class Map extends StatefulWidget {
 class _MapState extends State<Map> {
   late LatLng currentLocation;
   final MapController mapController = MapController();
-  List<Marker> allMarkers = []; // Agregar esta lista de marcadores
+  List<Marker> allMarkers = [];
 
   @override
   void initState() {
     super.initState();
     currentLocation = LatLng(-38.7370, -72.5788);
+    getCurrentPosition();
+    getUsers().then((pymes) => print(pymes));
   }
 
   void getCurrentPosition() async {
@@ -49,6 +51,22 @@ class _MapState extends State<Map> {
   }
 
   Future<List<dynamic>> getUsers() async {
+    List<dynamic> pymes = [];
+
+    await UserService.fetchUsers().then((jsonData) {
+      if (jsonData != null) {
+        for (var user in jsonData) {
+          var direccionPyme = user['nombrePyme'];
+          if (direccionPyme != null) {
+            pymes.add(direccionPyme);
+          }
+        }
+      }
+    });
+    return pymes;
+  }
+
+  void marcarPyme() async {
     List<dynamic> direccionesPymes = [];
 
     await UserService.fetchUsers().then((jsonData) {
@@ -62,13 +80,44 @@ class _MapState extends State<Map> {
       }
     });
 
-    return direccionesPymes;
+    for (var coords in direccionesPymes) {
+      List<String> latlong = coords.split(",");
+      double lat = double.parse(latlong[0]);
+      double long = double.parse(latlong[1]);
+      print("latitud: $lat, longitud: $long");
+
+      Marker newMarker = Marker(
+        point: LatLng(lat, long),
+        width: 80,
+        height: 80,
+        child: Icon(
+          Icons.location_on,
+          size: 50,
+          color: Colors.blue,
+        ),
+      );
+      // Agregar el nuevo marcador a la lista de marcadores
+      setState(() {
+        allMarkers.add(newMarker);
+      });
+    }
   }
 
-  void marcarPyme() async {
-    List<dynamic> direccionesPymes = await getUsers();
+  void buscarPyme(String nombrePyme) async {
+    List<dynamic> pymes = [];
 
-    for (var coords in direccionesPymes) {
+    await UserService.fetchUsers().then((jsonData) {
+      if (jsonData != null) {
+        for (var user in jsonData) {
+          var direccionPyme = user['nombrePyme'];
+          if (direccionPyme != null) {
+            pymes.add(direccionPyme);
+          }
+        }
+      }
+    });
+
+    for (var coords in pymes) {
       List<String> latlong = coords.split(",");
       double lat = double.parse(latlong[0]);
       double long = double.parse(latlong[1]);
@@ -136,8 +185,7 @@ class _MapState extends State<Map> {
                     ),
                   ),
                   onChanged: (value) {
-                    // Lógica para la búsqueda mientras escribes
-                    // searchUsers(value);
+                    // Lógica para el buscador
                   },
                 ),
               ),
@@ -195,7 +243,6 @@ class _MapState extends State<Map> {
                       SizedBox(width: 10),
                       ElevatedButton(
                         onPressed: () {
-                          //getUsers();
                           marcarPyme();
                         },
                         child: Icon(Icons.store),

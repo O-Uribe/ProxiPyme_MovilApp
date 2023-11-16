@@ -22,12 +22,15 @@ class MyApp extends StatelessWidget {
   final dynamic token;
   const MyApp({this.token, Key? key}) : super(key: key);
 
+  get kPrimaryColor => null;
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'ProxiPyme',
       debugShowCheckedModeBanner: false,
-      theme: ThemeData(primarySwatch: Colors.teal, useMaterial3: true),
+      theme: ThemeData(
+          primaryColor: kPrimaryColor, scaffoldBackgroundColor: Colors.white),
       home: (token == null || JwtDecoder.isExpired(token) == true)
           ? MainPage()
           : HomePage(token: token),

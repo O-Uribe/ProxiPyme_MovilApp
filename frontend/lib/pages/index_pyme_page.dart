@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:http/http.dart' as http;
 import 'package:jwt_decoder/jwt_decoder.dart';
-import 'dart:convert';
-import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:proxi_pyme/utils/get_user.dart';
 
 class IndexPymePage extends StatefulWidget {
   final dynamic token;
@@ -30,14 +28,8 @@ class _IndexPymePageState extends State<IndexPymePage> {
   }
 
   Future<void> fetchUser(String userId) async {
-    await dotenv.load(fileName: '.env');
-    final url = Uri.parse(dotenv.env['URL_USERS'] ?? '');
-    try {
-      final response = await http.get(url);
-
-      if (response.statusCode == 200) {
-        final jsonData = json.decode(response.body);
-
+    await UserService.fetchUsers().then((jsonData) {
+      if (jsonData != null) {
         for (var usuario in jsonData) {
           if (usuario['_id'] == userId) {
             setState(() {
@@ -45,12 +37,8 @@ class _IndexPymePageState extends State<IndexPymePage> {
             });
           }
         }
-      } else {
-        print('Error al obtener el nombre de usuario');
       }
-    } catch (error) {
-      print('Error de conexión: $error');
-    }
+    });
   }
 
   void searchUsers(String query) {
@@ -65,57 +53,195 @@ class _IndexPymePageState extends State<IndexPymePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.teal.shade50,
-      body: Center(
-        child: Column(
-          children: [
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Text(
-                  " Bienvenido: \n ${userData?['encargadoPyme']}",
-                  style: TextStyle(
-                    color: Colors.teal,
-                    fontSize: 20,
-                    fontWeight: FontWeight.bold,
-                  ),
-                  textAlign: TextAlign.center,
-                ),
-                SizedBox(width: 15),
-                IconoLogo(logoUrl: userData?['logoPyme']),
+      body: ListView(
+        children: [
+          _top(userData),
+          SizedBox(height: 20.0),
+          Padding(
+            padding: EdgeInsets.all(16.0),
+            child: Row(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: <Widget>[
+                Text("Categorías",
+                    style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                      fontSize: 22.0,
+                    )),
+                Text("Ver más",
+                    style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                      fontSize: 12.0,
+                    )),
               ],
             ),
-            SizedBox(height: 20),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          ),
+          SizedBox(height: 20.0),
+          SizedBox(
+              height: 190.0,
+              child: GridView(
+                gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                  crossAxisCount: 3,
+                  childAspectRatio: 3 / 2,
+                ),
+                children: <Widget>[
+                  _gridItem(Icon(Icons.restaurant, color: Colors.white),
+                      Color.fromRGBO(199, 220, 167, 1.0), "Comida"),
+                  _gridItem(Icon(Icons.local_cafe, color: Colors.white),
+                      Color.fromRGBO(199, 220, 167, 1.0), "Cafés"),
+                  _gridItem(Icon(Icons.shopping_bag, color: Colors.white),
+                      Color.fromRGBO(199, 220, 167, 1.0), "Ropa"),
+                  _gridItem(Icon(Icons.home, color: Colors.white),
+                      Color.fromRGBO(199, 220, 167, 1.0), "Decoración"),
+                  _gridItem(Icon(Icons.card_giftcard, color: Colors.white),
+                      Color.fromRGBO(199, 220, 167, 1.0), "Regalos"),
+                  _gridItem(Icon(Icons.palette, color: Colors.white),
+                      Color.fromRGBO(199, 220, 167, 1.0), "Artesanías"),
+                  _gridItem(Icon(Icons.phone_android, color: Colors.white),
+                      Color.fromRGBO(199, 220, 167, 1.0), "Electrónica"),
+                  _gridItem(Icon(Icons.book, color: Colors.white),
+                      Color.fromRGBO(199, 220, 167, 1.0), "Libros"),
+                  _gridItem(Icon(Icons.music_note, color: Colors.white),
+                      Color.fromRGBO(199, 220, 167, 1.0), "Música"),
+                  _gridItem(Icon(Icons.edit, color: Colors.white),
+                      Color.fromRGBO(199, 220, 167, 1.0), "Papelería"),
+                ],
+              )),
+          Padding(
+            padding: EdgeInsets.all(16.0),
+            child: Row(
               children: [
-                CustomImageButton(
-                  imageAsset: 'assets/images/mapa.png',
-                  label: 'Mapa',
-                  onTap: () {
-                    Navigator.pushNamed(
-                      context,
-                      '/Map',
-                    );
-                  },
-                ),
-                CustomImageButton(
-                  imageAsset: 'assets/images/locales.png',
-                  label: 'Productos',
-                  onTap: () {
-                    Navigator.pushNamed(
-                      context,
-                      '/Categories',
-                    );
-                  },
-                ),
+                Text("Últimas publicaciones",
+                    style: TextStyle(
+                      fontSize: 22.0,
+                      fontWeight: FontWeight.bold,
+                    )),
               ],
             ),
-          ],
-        ),
+          ),
+          _cardItem(1),
+          _cardItem(2),
+        ],
       ),
     );
   }
+}
+
+_cardItem(image) {
+  return Padding(
+      padding: EdgeInsets.all(16.0),
+      child: Row(
+        children: <Widget>[
+          Container(
+            width: 100.0,
+            height: 100.0,
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(20.0),
+              image: DecorationImage(
+                image: AssetImage("assets/images/locales.png"),
+                fit: BoxFit.cover,
+              ),
+            ),
+          ),
+          SizedBox(width: 20.0),
+          Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: <Widget>[
+              Text("Nombre del producto",
+                  style: TextStyle(
+                    fontWeight: FontWeight.bold,
+                    fontSize: 22.0,
+                  )),
+              SizedBox(height: 10.0),
+              Text("Descripción de producto",
+                  style: TextStyle(
+                    color: Colors.pink,
+                    fontWeight: FontWeight.bold,
+                  )),
+              SizedBox(height: 10.0),
+              Text("publicador por",
+                  style: TextStyle(
+                    color: Colors.grey,
+                    fontWeight: FontWeight.bold,
+                  )),
+            ],
+          )
+        ],
+      ));
+}
+
+_gridItem(Icon icon, Color color, String label) {
+  return Card(
+    color: color,
+    child: Column(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: <Widget>[
+        icon,
+        SizedBox(height: 10.0),
+        Text(label,
+            style: TextStyle(
+              color: Colors.white,
+            )),
+      ],
+    ),
+  );
+}
+
+_top(Map<String, dynamic>? userData) {
+  return Container(
+      padding: EdgeInsets.all(16.0),
+      decoration: BoxDecoration(
+        color: Color.fromARGB(255, 26, 101, 158),
+        borderRadius: BorderRadius.only(
+          bottomLeft: Radius.circular(30.0),
+          bottomRight: Radius.circular(30.0),
+        ),
+      ),
+      child: Column(
+        children: <Widget>[
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: <Widget>[
+              Row(
+                children: <Widget>[
+                  CircleAvatar(
+                    backgroundColor: Colors.white,
+                    child: IconoLogo(logoUrl: userData?["logoPyme"]),
+                  ),
+                  SizedBox(width: 10.0),
+                  Text("Hola, ${userData?["encargadoPyme"]}",
+                      style: TextStyle(
+                        color: Colors.white,
+                      )),
+                ],
+              ),
+              IconButton(
+                icon: Icon(
+                  Icons.notifications,
+                  color: const Color.fromARGB(255, 18, 184, 148),
+                ),
+                onPressed: () {},
+              ),
+            ],
+          ),
+          SizedBox(height: 15.0),
+          TextField(
+            decoration: InputDecoration(
+              hintText: "Buscar",
+              fillColor: Colors.white,
+              filled: true,
+              suffixIcon: Icon(Icons.filter_list,
+                  color: const Color.fromRGBO(0, 150, 136, 1)),
+              enabledBorder: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(20.0),
+                borderSide: BorderSide(color: Colors.transparent),
+              ),
+              contentPadding:
+                  EdgeInsets.symmetric(horizontal: 16.0, vertical: 16.0),
+            ),
+          ),
+        ],
+      ));
 }
 
 class IconoLogo extends StatelessWidget {
@@ -126,13 +252,10 @@ class IconoLogo extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      width: 50,
-      height: 50,
       decoration: BoxDecoration(
-        shape: BoxShape.circle, // Esto hace que el contenedor sea circular
+        shape: BoxShape.circle,
         border: Border.all(
-          color: Colors.teal, // Color del borde
-          width: 2.0, // Ancho del borde
+          color: Colors.teal,
         ),
       ),
       child: logoUrl != null
@@ -153,66 +276,5 @@ class IconoLogo extends StatelessWidget {
               ),
             ),
     );
-  }
-}
-
-class CustomImageButton extends StatelessWidget {
-  final String imageAsset;
-  final String label;
-  final Function onTap;
-
-  CustomImageButton({
-    required this.imageAsset,
-    required this.label,
-    required this.onTap,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return GestureDetector(
-      onTap: () => onTap(),
-      child: Container(
-        width: 180,
-        height: 100,
-        decoration: BoxDecoration(
-          image: DecorationImage(
-            image: AssetImage(imageAsset),
-            fit: BoxFit.cover,
-          ),
-          borderRadius: BorderRadius.circular(4),
-          boxShadow: [
-            BoxShadow(
-              color: Colors.grey,
-              blurRadius: 3,
-              offset: Offset(0, 2),
-            ),
-          ],
-          gradient: LinearGradient(
-            colors: [Colors.teal, Colors.tealAccent],
-            begin: Alignment.topLeft,
-            end: Alignment.bottomRight,
-          ),
-        ),
-        child: Center(
-          child: Text(
-            label,
-            style: TextStyle(
-              color: Colors.white,
-              fontSize: 24,
-              fontWeight: FontWeight.bold,
-            ),
-          ),
-        ),
-      ),
-    );
-  }
-}
-
-class Productos extends StatelessWidget {
-  const Productos({Key? key}) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return Container();
   }
 }
