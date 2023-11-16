@@ -6,6 +6,8 @@ import 'package:proxi_pyme/pages/activity_page.dart';
 import 'package:proxi_pyme/pages/index_pyme_page.dart';
 import 'package:proxi_pyme/pages/index_user_page.dart';
 
+import 'package:proxi_pyme/pages/user_profile.dart';
+
 class RoutesNavBar extends StatelessWidget {
   final int index;
   final dynamic token;
@@ -26,7 +28,8 @@ class RoutesNavBar extends StatelessWidget {
     } else if (index == 2) {
       return Activity();
     } else if (index == 3) {
-      return SettingsPage();
+      // return SettingsPage();
+      return UserProfile();
     }
 
     return Container(); // Puedes manejar otros índices según tus necesidades
