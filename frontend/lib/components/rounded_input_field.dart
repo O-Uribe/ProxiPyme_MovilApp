@@ -7,28 +7,36 @@ class RoundedInputField extends StatelessWidget {
   final IconData icon;
   final TextEditingController controller;
   final ValueChanged<String> onChanged;
+  final double vertical;
 
   const RoundedInputField({
-    super.key,
+    Key? key,
     required this.hintText,
     this.icon = Icons.person,
     required this.onChanged,
     required this.controller,
-  });
+    this.vertical = 5,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return TextFieldContainer(
-        child: TextField(
-            onChanged: onChanged,
-            controller: controller,
-            decoration: InputDecoration(
-              hintText: hintText,
-              icon: Icon(
-                icon,
-                color: kPrimaryColor,
-              ),
-              border: InputBorder.none,
-            )));
+      vertical: vertical,
+      child: TextField(
+        onChanged: onChanged,
+        controller: controller,
+        decoration: InputDecoration(
+          hintText: hintText,
+          icon: Icon(
+            icon,
+            color: kPrimaryColor,
+          ),
+          border: InputBorder.none,
+          contentPadding: EdgeInsets.symmetric(
+              vertical: 10.0), // Ajusta este valor según tus necesidades
+        ),
+        maxLines: null, // Permite múltiples líneas de texto
+      ),
+    );
   }
 }

@@ -44,13 +44,21 @@ class _RegisterPageState extends State<RegisterPage> {
   TextEditingController pymeNameController = TextEditingController();
   TextEditingController pymeAddressController = TextEditingController();
   TextEditingController pymeManagerController = TextEditingController();
+  TextEditingController pymeCategoryController = TextEditingController();
   TextEditingController pymeDescriptionController = TextEditingController();
+
+  @override
+  void initState() {
+    super.initState();
+    pymeCategoryController.text = 'Comida';
+  }
 
   Future<void> registerUser(String username, email, password, userType,
       {String? pymeName,
       pymeAddress,
       pymeManager,
       pymeDescription,
+      pymeCategory,
       logoPath}) async {
     await dotenv.load(fileName: '.env');
 
@@ -70,6 +78,7 @@ class _RegisterPageState extends State<RegisterPage> {
         'direccionPyme': pymeAddress,
         'encargadoPyme': pymeManager,
         'descripcionPyme': pymeDescription,
+        'categoriaPyme': pymeCategory,
         'logoPyme': logoPath,
       }),
     );
@@ -107,26 +116,6 @@ class _RegisterPageState extends State<RegisterPage> {
     }
   }
 
-  void badRegister() {
-    showDialog(
-      context: context,
-      builder: (BuildContext context) {
-        return AlertDialog(
-          title: Text('Error'),
-          content: Text('No se pudo registrar el usuario'),
-          actions: [
-            TextButton(
-              onPressed: () {
-                Navigator.of(context).pop();
-              },
-              child: Text('Cerrar'),
-            ),
-          ],
-        );
-      },
-    );
-  }
-
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
@@ -136,11 +125,12 @@ class _RegisterPageState extends State<RegisterPage> {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
+              SizedBox(height: size.height * 0.05),
               Text(
                 "Únete a ProxiPyme!!",
                 style: TextStyle(fontWeight: FontWeight.bold, fontSize: 15),
               ),
-              SizedBox(height: size.height * 0.05),
+              SizedBox(height: size.height * 0.02),
               SvgPicture.asset(
                 "assets/icons/signup.svg",
                 height: size.height * 0.1,
@@ -155,7 +145,9 @@ class _RegisterPageState extends State<RegisterPage> {
               ),
               SizedBox(height: size.height * 0.01),
               CustomDropdownButton(
+                icon: Icons.person_2_outlined,
                 value: userType,
+                items: {'Cliente': 'Cliente', 'Pyme': 'Pyme'},
                 onChanged: (String? newValue) {
                   setState(() {
                     userType = newValue ?? 'Cliente';
@@ -177,20 +169,13 @@ class _RegisterPageState extends State<RegisterPage> {
               ),
               RoundedPasswordField(
                   controller: passwordController, onChanged: (value) {}),
-              SizedBox(height: size.height * 0.03),
-              Text('Registra los datos de tu Pyme',
-                  style: TextStyle(
-                      color: kPrimaryColor,
-                      fontSize: 15,
-                      fontWeight: FontWeight.bold)),
+              SizedBox(height: size.height * 0.02),
               if (showPymeForm) ...[
-                RoundedInputField(
-                  controller: pymeNameController,
-                  icon: Icons.store,
-                  hintText: "Nombre de tu Pyme",
-                  onChanged: (value) {},
-                ),
-                direccion(),
+                Text('Registra los datos de tu Pyme',
+                    style: TextStyle(
+                        color: kPrimaryColor,
+                        fontSize: 15,
+                        fontWeight: FontWeight.bold)),
                 RoundedInputField(
                   controller: pymeManagerController,
                   icon: Icons.supervisor_account,
@@ -198,9 +183,48 @@ class _RegisterPageState extends State<RegisterPage> {
                   onChanged: (value) {},
                 ),
                 RoundedInputField(
+                  controller: pymeNameController,
+                  icon: Icons.store,
+                  hintText: "Nombre de tu Pyme",
+                  onChanged: (value) {},
+                ),
+                direccion(),
+                Text("Categoría de tu Pyme",
+                    style: TextStyle(
+                        color: kPrimaryColor,
+                        fontSize: 15,
+                        fontWeight: FontWeight.bold)),
+                SizedBox(height: size.height * 0.01),
+                CustomDropdownButton(
+                  icon: Icons.category,
+                  width: 0.8,
+                  value: pymeCategoryController.text,
+                  items: {
+                    'Comida': 'Comida',
+                    'Ropa': 'Ropa',
+                    'Belleza': 'Belleza',
+                    'Salud': 'Salud',
+                    'Hogar': 'Hogar',
+                    'Deportes': 'Deportes',
+                    'Mascotas': 'Mascotas',
+                    'Juguetes': 'Juguetes',
+                    'Libros': 'Libros',
+                    'Tecnología': 'Tecnología',
+                    'Servicios': 'Servicios',
+                    'Otros': 'Otros'
+                  },
+                  onChanged: (String? newValue) {
+                    setState(() {
+                      pymeCategoryController.text = newValue ?? 'Comida';
+                    });
+                  },
+                ),
+                SizedBox(height: size.height * 0.01),
+                RoundedInputField(
+                  vertical: 20,
                   controller: pymeDescriptionController,
                   icon: Icons.description,
-                  hintText: "Categoria de tu Pyme",
+                  hintText: "Describe tu Pyme",
                   onChanged: (value) {},
                 ),
                 logo(),
@@ -214,17 +238,20 @@ class _RegisterPageState extends State<RegisterPage> {
                     String? pymeName;
                     String? pymeAddress;
                     String? pymeManager;
+                    String? pymeCategory;
                     String? pymeDescription;
                     if (userType == 'Pyme') {
                       pymeName = pymeNameController.text;
                       pymeAddress = '$latitud,$longitud';
                       pymeManager = pymeManagerController.text;
+                      pymeCategory = pymeCategoryController.text;
                       pymeDescription = pymeDescriptionController.text;
                     }
                     registerUser(username, email, password, userType,
                         pymeName: pymeName,
                         pymeAddress: pymeAddress,
                         pymeManager: pymeManager,
+                        pymeCategory: pymeCategory,
                         pymeDescription: pymeDescription,
                         logoPath: imageUrl);
 
@@ -244,6 +271,7 @@ class _RegisterPageState extends State<RegisterPage> {
                   );
                 },
               ),
+              SizedBox(height: size.height * 0.05),
             ],
           ),
         ),
