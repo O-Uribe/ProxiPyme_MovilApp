@@ -27,11 +27,19 @@ class _HomePageState extends State<HomePage> {
 
   @override
   Widget build(BuildContext context) {
+    String title = "Menú principal"; // Título predeterminado
+    if (index == 1) {
+      title = "Mapa";
+    } else if (index == 2) {
+      title = "Actividad";
+    } else if (index == 3) {
+      title = "Perfil de usuario";
+    }
     return Scaffold(
       bottomNavigationBar: myBottomNavigationBar,
       backgroundColor: Colors.teal.shade50,
       appBar: AppBar(
-        title: const Text("Menú principal"),
+        title: Text(title),
         centerTitle: true,
         backgroundColor: Color.fromARGB(255, 26, 101, 158),
       ),
