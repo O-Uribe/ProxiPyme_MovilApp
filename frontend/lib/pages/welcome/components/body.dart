@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:proxi_pyme/components/background.dart';
+import 'package:proxi_pyme/pages/welcome/components/background.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:proxi_pyme/components/rounded_button.dart';
 import 'package:proxi_pyme/utils/constants.dart';

@@ -4,7 +4,7 @@ import 'package:image_picker/image_picker.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'dart:io';
 
-import 'package:proxi_pyme/pages/main_page.dart';
+import 'package:proxi_pyme/pages/welcome/main_page.dart';
 
 class SettingsPage extends StatefulWidget {
   @override

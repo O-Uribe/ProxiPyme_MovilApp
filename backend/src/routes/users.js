@@ -21,7 +21,7 @@ router.post('/api/users/login', async (req, res) => {
         const { correo, contraseña } = req.body;  
         const user = await Usuarios.findOne({ correo });
         if (!user) {
-            return res.status(401).json({ error: 'Credenciales incorrectas' });
+            return res.status(401).json({ status:false, error: 'Credenciales incorrectas' });
         }
         // Comparar la contraseña ingresada con la contraseña almacenada en la base de datos
         const passwordMatch = await bcrypt.compare(contraseña, user.contraseña);
@@ -29,7 +29,7 @@ router.post('/api/users/login', async (req, res) => {
             const token = jwt.sign({ userId: user._id, userType: user.tipoUsuario}, 'taller_IV', { expiresIn: '1h' });
             res.status(200).json({ status:true,token:token});
         } else {
-            res.status(401).json({ error: 'Credenciales incorrectas' });
+            res.status(401).json({ status:false, error: 'Credenciales incorrectas' });
         }
   
     } catch (error) {
@@ -43,13 +43,13 @@ router.post('/api/users/register', async (req, res) => {
     try {
         const { nombreUsuario, correo, contraseña, tipoUsuario } = req.body;
         if (!validator.isEmail(correo)) {
-            return res.status(400).json({ error: 'El correo electrónico no es válido' });
+            return res.status(400).json({ status:false, error: 'Correo electrónico no válido' });
         }
 
         // Verificar si el correo electrónico ya está en uso
         const existente = await Usuarios.findOne({ correo });
         if (existente) {
-            return res.status(400).json({ error: 'El correo electrónico ya está registrado' });
+            return res.status(400).json({ status:false, error: 'Correo electrónico no válido' });
         }
 
         // Encriptar la contraseña

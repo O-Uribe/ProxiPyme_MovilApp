@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:cloudinary_flutter/cloudinary_context.dart';
 import 'package:cloudinary_url_gen/cloudinary.dart';
-import 'package:proxi_pyme/components/body.dart';
+import 'package:proxi_pyme/pages/welcome/components/body.dart';
 
 class MainPage extends StatelessWidget {
   const MainPage({super.key});
