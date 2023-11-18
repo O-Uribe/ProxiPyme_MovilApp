@@ -72,6 +72,7 @@ router.post('/api/users/register', async (req, res) => {
                 nombrePyme,
                 direccionPyme,
                 encargadoPyme,
+                categoriaPyme,
                 descripcionPyme,
                 logoPyme
             } = req.body;
@@ -84,6 +85,7 @@ router.post('/api/users/register', async (req, res) => {
                 nombrePyme,
                 direccionPyme,
                 encargadoPyme,
+                categoriaPyme,
                 descripcionPyme,
                 logoPyme
             });

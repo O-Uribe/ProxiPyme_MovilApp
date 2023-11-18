@@ -17,11 +17,15 @@ const userSchema = new Schema({
     // Propiedades específicas para pymes
     nombrePyme: {
         type: String, 
+        unique: true,
     },
     direccionPyme: {
         type: String, 
     },
     encargadoPyme: {
+        type: String, 
+    },
+    categoriaPyme: {
         type: String, 
     },
     descripcionPyme: {
