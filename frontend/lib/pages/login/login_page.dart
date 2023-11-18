@@ -51,8 +51,6 @@ class _LoginPageState extends State<LoginPage> {
       );
 
       var jsonResponse = json.decode(response.body);
-      print(
-          "############### \n" + jsonResponse.toString() + "\n###############");
       if (jsonResponse['status']) {
         final token = json.decode(response.body)['token'];
 
@@ -71,14 +69,18 @@ class _LoginPageState extends State<LoginPage> {
             ),
           );
         }
-      } else if (jsonResponse['status'] == "error: Credenciales incorrectas") {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            duration: const Duration(seconds: 2),
-            content:
-                Text('Error al validar el correo electrónico o la contraseña'),
-          ),
-        );
+      } else {
+        if (!context.mounted) {
+          return;
+        } else {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              duration: const Duration(seconds: 2),
+              content: Text(
+                  'Error al validar el correo electrónico o la contraseña'),
+            ),
+          );
+        }
       }
     } else {
       if (!context.mounted) {

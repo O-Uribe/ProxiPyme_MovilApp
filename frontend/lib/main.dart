@@ -8,11 +8,13 @@ import 'package:proxi_pyme/pages/welcome/main_page.dart';
 import 'package:proxi_pyme/pages/settings_page.dart';
 import 'package:proxi_pyme/pages/map_page.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  SharedPreferences prefs = await SharedPreferences.getInstance();
 
+  SharedPreferences prefs = await SharedPreferences.getInstance();
+  await dotenv.load(fileName: ".env");
   runApp(MyApp(
     token: prefs.getString('token'),
   ));
