@@ -32,10 +32,32 @@ class MyApp extends StatelessWidget {
       title: 'ProxiPyme',
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
-          primaryColor: kPrimaryColor, scaffoldBackgroundColor: Colors.white),
-      home: (token == null || JwtDecoder.isExpired(token) == true)
-          ? MainPage()
-          : HomePage(token: token),
+        primaryColor: kPrimaryColor,
+        scaffoldBackgroundColor: Colors.white,
+      ),
+      home: FutureBuilder(
+        // Función para cargar datos
+        future: _loadData(), 
+
+        builder: (context, snapshot) {
+          if (snapshot.connectionState == ConnectionState.done) {
+            if (snapshot.hasError) {
+              return Center(
+                child: Text('Error cargando los datos'),
+              );
+            } else {
+              return (token == null || JwtDecoder.isExpired(token) == true)
+                  ? MainPage()
+                  : HomePage(token: token);
+            }
+          } else {
+
+            return Center(
+              child: CircularProgressIndicator(),
+            );
+          }
+        },
+      ),
 
       // Rutas de la página
       initialRoute: '/',
@@ -49,4 +71,9 @@ class MyApp extends StatelessWidget {
       },
     );
   }
+}
+
+// Los datos estarán cargando por 3 segundos
+Future<void> _loadData() async {
+  await Future.delayed(Duration(seconds: 3));
 }
