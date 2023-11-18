@@ -30,8 +30,7 @@ class _BottomNavigationState extends State<BottomNavigation> {
         BottomNavigationBarItem(icon: Icon(Icons.home), label: 'Inicio'),
         BottomNavigationBarItem(icon: Icon(Icons.map), label: 'Mapa'),
         BottomNavigationBarItem(icon: Icon(Icons.history), label: 'Actividad'),
-        BottomNavigationBarItem(
-            icon: Icon(Icons.settings), label: 'Configuración'),
+        BottomNavigationBarItem(icon: Icon(Icons.settings), label: 'Configuración'),
       ],
     );
   }

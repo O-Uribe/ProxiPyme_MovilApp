@@ -12,7 +12,7 @@ class RoutesNavBar extends StatelessWidget {
   final dynamic token;
   final String title; // Título del appBar
 
-  const RoutesNavBar({super.key, required this.index, this.token, this.title = ''});
+  const RoutesNavBar({Key? key, required this.index, this.token, this.title = ''});
 
   @override
   Widget build(BuildContext context) {
@@ -29,8 +29,8 @@ class RoutesNavBar extends StatelessWidget {
     } else if (index == 2) {
       return Activity();
     } else if (index == 3) {
-      // return SettingsPage();
-      return UserProfile();
+      return SettingsPage();
+      // return UserProfile();
     }
     return Container();
   }

@@ -11,39 +11,68 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  int index = 0;
-  BottomNavigation? myBottomNavigationBar;
+  int currentIndex = 0;
+  final PageController _pageController = PageController(initialPage: 0);
+
+  // Títulos que se muestran en la barra superior de acuerdo al index
+  final List<String> titles = [
+    "Menú principal",
+    "Mapa",
+    "Actividad",
+    "Perfil de usuario",
+  ];
 
   @override
   void initState() {
-    myBottomNavigationBar = BottomNavigation(indexActual: (i) {
-      setState(() {
-        index = i;
-      });
-    });
-
     super.initState();
   }
 
   @override
+  void dispose() {
+    _pageController.dispose();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
-    String title = "Menú principal"; // Título predeterminado
-    if (index == 1) {
-      title = "Mapa";
-    } else if (index == 2) {
-      title = "Actividad";
-    } else if (index == 3) {
-      title = "Perfil de usuario";
-    }
     return Scaffold(
-      bottomNavigationBar: myBottomNavigationBar,
+      
+      // Maneja el efecto y duración de la transición
+      bottomNavigationBar: BottomNavigation(
+        indexActual: (index) {
+          setState(() {
+            currentIndex = index;
+            _pageController.animateToPage(
+              index,
+              duration: Duration(milliseconds: 300),
+              curve: Curves.ease);
+          });
+        },
+      ),
+
+      // Títulos y colores de la barra superior
       backgroundColor: Colors.teal.shade50,
       appBar: AppBar(
-        title: Text(title),
+        title: Text(titles[currentIndex]),
         centerTitle: true,
         backgroundColor: Color.fromARGB(255, 26, 101, 158),
       ),
-      body: RoutesNavBar(index: index, token: widget.token),
+
+      // Contenido animado de la barra de navegación
+      body: PageView(
+        controller: _pageController,
+        onPageChanged: (index) {
+          setState(() {
+            currentIndex = index;
+          });
+        },
+        children: [
+          RoutesNavBar(index: 0, token: widget.token, title: titles[0]),
+          RoutesNavBar(index: 1, token: widget.token, title: titles[1]),
+          RoutesNavBar(index: 2, token: widget.token, title: titles[2]),
+          RoutesNavBar(index: 3, token: widget.token, title: titles[3]),
+        ],
+      ),
     );
   }
 }
