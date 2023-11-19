@@ -8,6 +8,7 @@ import 'package:proxi_pyme/pages/settings_page.dart';
 import 'package:proxi_pyme/pages/map_page.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:proxi_pyme/components/splash_screen.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -51,7 +52,7 @@ class MyApp extends StatelessWidget {
             }
           } else {
             return Center(
-              child: CircularProgressIndicator(),
+              child: SplashScreen(),
             );
           }
         },
