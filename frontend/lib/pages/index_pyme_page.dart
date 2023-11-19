@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:jwt_decoder/jwt_decoder.dart';
 import 'package:proxi_pyme/utils/get_user.dart';
+import 'dart:convert';
+import 'package:http/http.dart' as http;
 
 class IndexPymePage extends StatefulWidget {
   final dynamic token;
@@ -17,6 +19,8 @@ class _IndexPymePageState extends State<IndexPymePage> {
   String searchQuery = "";
   List<String> searchResults = [];
 
+  final searchController = TextEditingController();
+
   @override
   void initState() {
     super.initState();
@@ -25,6 +29,10 @@ class _IndexPymePageState extends State<IndexPymePage> {
     userId = jwtDecodedToken['userId'];
 
     fetchUser(userId);
+
+    searchController.addListener(() {
+      searchUsers(searchController.text);
+    });
   }
 
   Future<void> fetchUser(String userId) async {
@@ -41,12 +49,24 @@ class _IndexPymePageState extends State<IndexPymePage> {
     });
   }
 
-  void searchUsers(String query) {
+  Future<List<dynamic>> fetchUsers() async {
+    final response = await http.get(Uri.parse('https://proxipymemovilapp-production.up.railway.app/api/users/'));
+
+    if (response.statusCode == 200) {
+      return jsonDecode(response.body);
+    } else {
+      throw Exception('Failed to load users');
+    }
+  }
+
+  void searchUsers(String query) async {
+    List<dynamic> users = await fetchUsers();
     setState(() {
       searchQuery = query;
-      // Lógica de búsqueda de usuarios aquí, puedes usar `fetchUserName` con filtros.
-      // Actualiza `searchResults` con los resultados de la búsqueda.
-      // Ejemplo: searchResults = ['Usuario1', 'Usuario2', ...];
+      searchResults = users
+      .where((user) => user['tipoUsuario'] == 'Pyme' && user['nombreUsuario'].contains(query))
+      .map((user) => user['nombreUsuario'] as String) // Cast each user's name to String
+      .toList();
     });
   }
 
@@ -226,6 +246,7 @@ _top(Map<String, dynamic>? userData) {
           ),
           SizedBox(height: 15.0),
           TextField(
+            controller: searchController.text,
             decoration: InputDecoration(
               hintText: "Buscar",
               fillColor: Colors.white,

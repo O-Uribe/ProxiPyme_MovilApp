@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:proxi_pyme/routes/routes_nav_bar.dart';
+import 'package:proxi_pyme/utils/constants.dart';
 import 'package:proxi_pyme/widgets/navigation_bar.dart';
 
 class HomePage extends StatefulWidget {
@@ -55,7 +56,7 @@ class _HomePageState extends State<HomePage> {
       appBar: AppBar(
         title: Text(titles[currentIndex]),
         centerTitle: true,
-        backgroundColor: Color.fromARGB(255, 26, 101, 158),
+        backgroundColor: kPrimaryColor,
       ),
 
       // Contenido animado de la barra de navegación
