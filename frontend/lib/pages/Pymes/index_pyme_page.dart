@@ -19,8 +19,6 @@ class _IndexPymePageState extends State<IndexPymePage> {
   String searchQuery = "";
   List<String> searchResults = [];
 
-  final searchController = TextEditingController();
-
   @override
   void initState() {
     super.initState();
@@ -29,10 +27,6 @@ class _IndexPymePageState extends State<IndexPymePage> {
     userId = jwtDecodedToken['userId'];
 
     fetchUser(userId);
-
-    searchController.addListener(() {
-      searchUsers(searchController.text);
-    });
   }
 
   Future<void> fetchUser(String userId) async {
@@ -50,24 +44,14 @@ class _IndexPymePageState extends State<IndexPymePage> {
   }
 
   Future<List<dynamic>> fetchUsers() async {
-    final response = await http.get(Uri.parse('https://proxipymemovilapp-production.up.railway.app/api/users/'));
+    final response = await http.get(Uri.parse(
+        'https://proxipymemovilapp-production.up.railway.app/api/users/'));
 
     if (response.statusCode == 200) {
       return jsonDecode(response.body);
     } else {
       throw Exception('Failed to load users');
     }
-  }
-
-  void searchUsers(String query) async {
-    List<dynamic> users = await fetchUsers();
-    setState(() {
-      searchQuery = query;
-      searchResults = users
-      .where((user) => user['tipoUsuario'] == 'Pyme' && user['nombreUsuario'].contains(query))
-      .map((user) => user['nombreUsuario'] as String) // Cast each user's name to String
-      .toList();
-    });
   }
 
   @override
@@ -107,24 +91,26 @@ class _IndexPymePageState extends State<IndexPymePage> {
                 children: <Widget>[
                   _gridItem(Icon(Icons.restaurant, color: Colors.white),
                       Color.fromRGBO(199, 220, 167, 1.0), "Comida"),
-                  _gridItem(Icon(Icons.local_cafe, color: Colors.white),
-                      Color.fromRGBO(199, 220, 167, 1.0), "Cafés"),
                   _gridItem(Icon(Icons.shopping_bag, color: Colors.white),
                       Color.fromRGBO(199, 220, 167, 1.0), "Ropa"),
+                  _gridItem(Icon(Icons.woman, color: Colors.white),
+                      Color.fromRGBO(199, 220, 167, 1.0), "Belleza"),
+                  _gridItem(Icon(Icons.medical_services, color: Colors.white),
+                      Color.fromRGBO(199, 220, 167, 1.0), "Salud"),
                   _gridItem(Icon(Icons.home, color: Colors.white),
-                      Color.fromRGBO(199, 220, 167, 1.0), "Decoración"),
-                  _gridItem(Icon(Icons.card_giftcard, color: Colors.white),
-                      Color.fromRGBO(199, 220, 167, 1.0), "Regalos"),
-                  _gridItem(Icon(Icons.palette, color: Colors.white),
-                      Color.fromRGBO(199, 220, 167, 1.0), "Artesanías"),
-                  _gridItem(Icon(Icons.phone_android, color: Colors.white),
-                      Color.fromRGBO(199, 220, 167, 1.0), "Electrónica"),
+                      Color.fromRGBO(199, 220, 167, 1.0), "Hogar"),
+                  _gridItem(Icon(Icons.sports_soccer, color: Colors.white),
+                      Color.fromRGBO(199, 220, 167, 1.0), "Deportes"),
+                  _gridItem(Icon(Icons.pets, color: Colors.white),
+                      Color.fromRGBO(199, 220, 167, 1.0), "Mascotas"),
                   _gridItem(Icon(Icons.book, color: Colors.white),
                       Color.fromRGBO(199, 220, 167, 1.0), "Libros"),
-                  _gridItem(Icon(Icons.music_note, color: Colors.white),
-                      Color.fromRGBO(199, 220, 167, 1.0), "Música"),
-                  _gridItem(Icon(Icons.edit, color: Colors.white),
-                      Color.fromRGBO(199, 220, 167, 1.0), "Papelería"),
+                  _gridItem(Icon(Icons.computer, color: Colors.white),
+                      Color.fromRGBO(199, 220, 167, 1.0), "Tecnología"),
+                  _gridItem(Icon(Icons.local_offer, color: Colors.white),
+                      Color.fromRGBO(199, 220, 167, 1.0), "Servicios"),
+                  _gridItem(Icon(Icons.more_horiz, color: Colors.white),
+                      Color.fromRGBO(199, 220, 167, 1.0), "Otros"),
                 ],
               )),
           Padding(
@@ -243,23 +229,6 @@ _top(Map<String, dynamic>? userData) {
                 onPressed: () {},
               ),
             ],
-          ),
-          SizedBox(height: 15.0),
-          TextField(
-            controller: searchController.text,
-            decoration: InputDecoration(
-              hintText: "Buscar",
-              fillColor: Colors.white,
-              filled: true,
-              suffixIcon: Icon(Icons.filter_list,
-                  color: const Color.fromRGBO(0, 150, 136, 1)),
-              enabledBorder: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(20.0),
-                borderSide: BorderSide(color: Colors.transparent),
-              ),
-              contentPadding:
-                  EdgeInsets.symmetric(horizontal: 16.0, vertical: 16.0),
-            ),
           ),
         ],
       ));

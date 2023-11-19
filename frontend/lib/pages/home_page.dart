@@ -37,16 +37,12 @@ class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      
-      // Maneja el efecto y duración de la transición
       bottomNavigationBar: BottomNavigation(
         indexActual: (index) {
           setState(() {
             currentIndex = index;
-            _pageController.animateToPage(
-              index,
-              duration: Duration(milliseconds: 300),
-              curve: Curves.ease);
+            _pageController.animateToPage(index,
+                duration: Duration(milliseconds: 800), curve: Curves.ease);
           });
         },
       ),

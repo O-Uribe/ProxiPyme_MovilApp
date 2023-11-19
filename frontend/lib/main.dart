@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:jwt_decoder/jwt_decoder.dart';
-import 'package:proxi_pyme/pages/categories_page.dart';
 import 'package:proxi_pyme/pages/home_page.dart';
 import 'package:proxi_pyme/pages/login/login_page.dart';
 import 'package:proxi_pyme/pages/register/register_page.dart';
@@ -37,7 +36,7 @@ class MyApp extends StatelessWidget {
       ),
       home: FutureBuilder(
         // Función para cargar datos
-        future: _loadData(), 
+        future: _loadData(),
 
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.done) {
@@ -51,7 +50,6 @@ class MyApp extends StatelessWidget {
                   : HomePage(token: token);
             }
           } else {
-
             return Center(
               child: CircularProgressIndicator(),
             );
@@ -67,7 +65,6 @@ class MyApp extends StatelessWidget {
         '/Register': (context) => RegisterPage(),
         '/Settings': (context) => SettingsPage(),
         '/Map': (context) => Map(),
-        '/Categories': (context) => CategoriesPage()
       },
     );
   }

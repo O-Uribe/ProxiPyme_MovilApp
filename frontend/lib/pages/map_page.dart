@@ -20,7 +20,6 @@ class _MapState extends State<Map> {
   void initState() {
     super.initState();
     currentLocation = LatLng(-38.7370, -72.5788);
-    getCurrentPosition();
     getUsers().then((pymes) => print(pymes));
   }
 

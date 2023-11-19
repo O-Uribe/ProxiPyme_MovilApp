@@ -1,6 +1,4 @@
 import 'package:flutter/material.dart';
-//import 'package:proxi_pyme/pages/index_pyme_page.dart';
-import 'package:proxi_pyme/pages/index_user_page.dart';
 
 class UserProfile extends StatefulWidget {
   const UserProfile({super.key});
@@ -58,24 +56,23 @@ class _UserProfileState extends State<UserProfile> {
               ),
               const SizedBox(height: 32.0),
 
-              // **Quick actions section**
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
-                  CustomImageButton(
-                    imageAsset: 'assets/images/mapa.png',
-                    label: 'Ubicación',
-                    onTap: () {
-                      Navigator.pushNamed(context, '/Map');
-                    },
-                  ),
-                  CustomImageButton(
-                    imageAsset: 'assets/images/ñandrejo.png',
-                    label: 'Productos',
-                    onTap: () {
-                      Navigator.pushNamed(context, '/Categories');
-                    },
-                  ),
+                  // CustomImageButton(
+                  //   imageAsset: 'assets/images/mapa.png',
+                  //   label: 'Ubicación',
+                  //   onTap: () {
+                  //     Navigator.pushNamed(context, '/Map');
+                  //   },
+                  // ),
+                  // CustomImageButton(
+                  //   imageAsset: 'assets/images/ñandrejo.png',
+                  //   label: 'Productos',
+                  //   onTap: () {
+                  //     Navigator.pushNamed(context, '/Categories');
+                  //   },
+                  // ),
                 ],
               ),
               const SizedBox(height: 32.0),

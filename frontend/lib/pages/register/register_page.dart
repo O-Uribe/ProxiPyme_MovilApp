@@ -34,6 +34,7 @@ class _RegisterPageState extends State<RegisterPage> {
       googleApiKey = dotenv.env['GOOGLE_API_KEY'] ?? '';
   File? _image;
   bool showPymeForm = false;
+  bool isLogoUploaded = false;
 
   // Campos para usuario Cliente
   TextEditingController usernameController = TextEditingController();
@@ -94,7 +95,7 @@ class _RegisterPageState extends State<RegisterPage> {
     final pickedFile = await picker.pickImage(source: ImageSource.gallery);
     var request = http.MultipartRequest(
       'POST',
-      Uri.parse('https://proxipymemovilapp-production.up.railway.app/upload'),
+      Uri.parse(dotenv.env['URL_UPLOAD'] ?? ''),
     );
 
     if (pickedFile != null) {
@@ -109,6 +110,9 @@ class _RegisterPageState extends State<RegisterPage> {
         if (response.statusCode == 200) {
           var responseBody = json.decode(await response.stream.bytesToString());
           imageUrl = responseBody["data"]["url"];
+          setState(() {
+            isLogoUploaded = true; // Marca que se ha cargado la imagen
+          });
         }
       } catch (e) {
         print('Error al subir la imagen: $e');
@@ -116,6 +120,7 @@ class _RegisterPageState extends State<RegisterPage> {
     }
   }
 
+//void para pantalla de carga
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
@@ -188,7 +193,7 @@ class _RegisterPageState extends State<RegisterPage> {
                   hintText: "Nombre de tu Pyme",
                   onChanged: (value) {},
                 ),
-                direccion(),
+                SizedBox(height: size.height * 0.02),
                 Text("Categoría de tu Pyme",
                     style: TextStyle(
                         color: kPrimaryColor,
@@ -219,6 +224,10 @@ class _RegisterPageState extends State<RegisterPage> {
                     });
                   },
                 ),
+                SizedBox(height: size.height * 0.03),
+                direccion(),
+                SizedBox(height: size.height * 0.01),
+                logo(),
                 SizedBox(height: size.height * 0.01),
                 RoundedInputField(
                   vertical: 20,
@@ -227,36 +236,67 @@ class _RegisterPageState extends State<RegisterPage> {
                   hintText: "Describe tu Pyme",
                   onChanged: (value) {},
                 ),
-                logo(),
               ],
               RoundedButton(
-                  text: "Registrarse",
-                  press: () {
-                    final username = usernameController.text;
-                    final email = emailController.text;
-                    final password = passwordController.text;
-                    String? pymeName;
-                    String? pymeAddress;
-                    String? pymeManager;
-                    String? pymeCategory;
-                    String? pymeDescription;
-                    if (userType == 'Pyme') {
-                      pymeName = pymeNameController.text;
-                      pymeAddress = '$latitud,$longitud';
-                      pymeManager = pymeManagerController.text;
-                      pymeCategory = pymeCategoryController.text;
-                      pymeDescription = pymeDescriptionController.text;
-                    }
-                    registerUser(username, email, password, userType,
-                        pymeName: pymeName,
-                        pymeAddress: pymeAddress,
-                        pymeManager: pymeManager,
-                        pymeCategory: pymeCategory,
-                        pymeDescription: pymeDescription,
-                        logoPath: imageUrl);
+                text: "Registrarse",
+                press: () {
+                  final username = usernameController.text;
+                  final email = emailController.text;
+                  final password = passwordController.text;
+                  String? pymeName;
+                  String? pymeAddress;
+                  String? pymeManager;
+                  String? pymeCategory;
+                  String? pymeDescription;
 
+                  if (userType == 'Pyme') {
+                    pymeName = pymeNameController.text;
+                    pymeAddress = '$latitud,$longitud';
+                    pymeManager = pymeManagerController.text;
+                    pymeCategory = pymeCategoryController.text;
+                    pymeDescription = pymeDescriptionController.text;
+                  }
+
+                  if (userType == 'Pyme') {
+                    pymeName = pymeNameController.text;
+                    pymeAddress = '$latitud,$longitud';
+                    pymeManager = pymeManagerController.text;
+                    pymeCategory = pymeCategoryController.text;
+                    pymeDescription = pymeDescriptionController.text;
+                  }
+
+                  if (username.isEmpty ||
+                      email.isEmpty ||
+                      password.isEmpty ||
+                      (userType == 'Pyme' &&
+                          (!isLogoUploaded ||
+                              pymeName!.isEmpty ||
+                              pymeAddress!.isEmpty ||
+                              pymeManager!.isEmpty ||
+                              pymeCategory!.isEmpty ||
+                              pymeDescription!.isEmpty))) {
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      SnackBar(
+                        content: Text('Por favor, completa todos los campos'),
+                      ),
+                    );
+                  } else {
+                    registerUser(
+                      username,
+                      email,
+                      password,
+                      userType,
+                      pymeName: pymeName,
+                      pymeAddress: pymeAddress,
+                      pymeManager: pymeManager,
+                      pymeCategory: pymeCategory,
+                      pymeDescription: pymeDescription,
+                      logoPath: imageUrl,
+                    );
                     Navigator.pop(context);
-                  }),
+                  }
+                },
+              ),
               SizedBox(height: size.height * 0.03),
               CheckAccount(
                 login: false,

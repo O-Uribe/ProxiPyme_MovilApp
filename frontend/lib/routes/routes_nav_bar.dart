@@ -3,16 +3,16 @@ import 'package:jwt_decoder/jwt_decoder.dart';
 import 'package:proxi_pyme/pages/settings_page.dart';
 import 'package:proxi_pyme/pages/map_page.dart';
 import 'package:proxi_pyme/pages/activity_page.dart';
-import 'package:proxi_pyme/pages/index_pyme_page.dart';
-import 'package:proxi_pyme/pages/index_user_page.dart';
-import 'package:proxi_pyme/pages/user_profile.dart';
+import 'package:proxi_pyme/pages/Pymes/index_pyme_page.dart';
+import 'package:proxi_pyme/pages/users/index_user_page.dart';
 
 class RoutesNavBar extends StatelessWidget {
   final int index;
   final dynamic token;
   final String title; // Título del appBar
 
-  const RoutesNavBar({Key? key, required this.index, this.token, this.title = ''});
+  const RoutesNavBar(
+      {Key? key, required this.index, this.token, this.title = ''});
 
   @override
   Widget build(BuildContext context) {
@@ -30,7 +30,6 @@ class RoutesNavBar extends StatelessWidget {
       return Activity();
     } else if (index == 3) {
       return SettingsPage();
-      // return UserProfile();
     }
     return Container();
   }
