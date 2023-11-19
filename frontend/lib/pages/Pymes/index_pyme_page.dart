@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:jwt_decoder/jwt_decoder.dart';
+import 'package:proxi_pyme/components/logo_pymes.dart';
 import 'package:proxi_pyme/utils/get_user.dart';
 import 'dart:convert';
 import 'package:http/http.dart' as http;
@@ -232,39 +233,4 @@ _top(Map<String, dynamic>? userData) {
           ),
         ],
       ));
-}
-
-class IconoLogo extends StatelessWidget {
-  final String? logoUrl;
-
-  const IconoLogo({Key? key, this.logoUrl}) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      decoration: BoxDecoration(
-        shape: BoxShape.circle,
-        border: Border.all(
-          color: Colors.teal,
-        ),
-      ),
-      child: logoUrl != null
-          ? ClipOval(
-              child: Image.network(
-                logoUrl!,
-                width: 50,
-                height: 50,
-                fit: BoxFit.cover, // Ajusta la imagen dentro del círculo
-              ),
-            )
-          : ClipOval(
-              child: Image.asset(
-                'assets/images/perfil.png',
-                width: 50,
-                height: 50,
-                fit: BoxFit.cover,
-              ),
-            ),
-    );
-  }
 }

@@ -21,6 +21,7 @@ class _IndexUserPageState extends State<IndexUserPage> {
   String searchQuery = "";
   List<String> searchResults = [];
 
+  bool showAllCategories = false;
   @override
   void initState() {
     super.initState();
@@ -85,23 +86,36 @@ class _IndexUserPageState extends State<IndexUserPage> {
               crossAxisAlignment: CrossAxisAlignment.center,
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: <Widget>[
-                Text("Categorías",
-                    style: TextStyle(
-                      fontWeight: FontWeight.bold,
-                      fontSize: 22.0,
-                    )),
-                Text("Ver más",
+                Text(
+                  "Categorías",
+                  style: TextStyle(
+                    fontWeight: FontWeight.bold,
+                    fontSize: 22.0,
+                  ),
+                ),
+                InkWell(
+                  onTap: () {
+                    setState(() {
+                      showAllCategories = !showAllCategories;
+                    });
+                  },
+                  child: Text(
+                    showAllCategories ? "Ver menos" : "Ver más",
                     style: TextStyle(
                       fontWeight: FontWeight.bold,
                       fontSize: 12.0,
-                    )),
+                    ),
+                  ),
+                ),
               ],
             ),
           ),
-          SizedBox(height: 20.0),
           SizedBox(
-            height: 190.0,
+            height: showAllCategories
+                ? null
+                : 190.0, // Si se muestra todo, no limites la altura
             child: GridView(
+              shrinkWrap: true,
               gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                 crossAxisCount: 3,
                 childAspectRatio: 3 / 2,
@@ -145,11 +159,13 @@ class _IndexUserPageState extends State<IndexUserPage> {
             padding: EdgeInsets.all(15.0),
             child: Row(
               children: [
-                Text("Últimas publicaciones",
-                    style: TextStyle(
-                      fontSize: 22.0,
-                      fontWeight: FontWeight.bold,
-                    )),
+                Text(
+                  "Últimas publicaciones",
+                  style: TextStyle(
+                    fontSize: 22.0,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
               ],
             ),
           ),
