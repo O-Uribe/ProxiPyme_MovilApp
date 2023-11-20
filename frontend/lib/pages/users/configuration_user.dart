@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:proxi_pyme/utils/constants.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:proxi_pyme/pages/welcome/main_page.dart';
 
 class ConfigurationUserPage extends StatefulWidget {
   const ConfigurationUserPage({Key? key}) : super(key: key);
@@ -9,6 +11,12 @@ class ConfigurationUserPage extends StatefulWidget {
 }
 
 class _ConfigurationUserPageState extends State<ConfigurationUserPage> {
+
+  Future<void> _logout() async {
+    SharedPreferences preferences = await SharedPreferences.getInstance();
+    await preferences.clear();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -43,10 +51,18 @@ class _ConfigurationUserPageState extends State<ConfigurationUserPage> {
             padding: const EdgeInsets.symmetric(horizontal: 10),
             child: ElevatedButton(
               onPressed: () {
-                // Cerrar sesión
-                Navigator.pushNamed(context, '/login');
+                _logout();
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => MainPage(),
+                  ),
+                );
               },
-              child: Text('Cerrar sesión'),
+              style: ButtonStyle(
+                backgroundColor: MaterialStateProperty.all(kPrimaryColor),
+              ),
+              child: Text('Cerrar Sesión'),
             ),
           ),
         ],

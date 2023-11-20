@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:jwt_decoder/jwt_decoder.dart';
-import 'package:proxi_pyme/pages/settings_page.dart';
+// import 'package:proxi_pyme/pages/settings_page.dart';
 import 'package:proxi_pyme/pages/map_page.dart';
 import 'package:proxi_pyme/pages/activity_page.dart';
 import 'package:proxi_pyme/pages/Pymes/index_pyme_page.dart';

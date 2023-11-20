@@ -3,7 +3,6 @@ import 'package:http/http.dart' as http;
 import 'package:image_picker/image_picker.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'dart:io';
-
 import 'package:proxi_pyme/pages/welcome/main_page.dart';
 
 class SettingsPage extends StatefulWidget {
