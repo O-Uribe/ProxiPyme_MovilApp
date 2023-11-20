@@ -5,6 +5,7 @@ import 'package:proxi_pyme/pages/map_page.dart';
 import 'package:proxi_pyme/pages/activity_page.dart';
 import 'package:proxi_pyme/pages/Pymes/index_pyme_page.dart';
 import 'package:proxi_pyme/pages/users/index_user_page.dart';
+import 'package:proxi_pyme/pages/users/configuration_user.dart';
 
 class RoutesNavBar extends StatelessWidget {
   final int index;
@@ -29,7 +30,8 @@ class RoutesNavBar extends StatelessWidget {
     } else if (index == 2) {
       return Activity();
     } else if (index == 3) {
-      return SettingsPage();
+      // return SettingsPage();
+      return ConfigurationUserPage();
     }
     return Container();
   }

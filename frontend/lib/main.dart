@@ -36,6 +36,7 @@ class MyApp extends StatelessWidget {
         scaffoldBackgroundColor: Colors.white,
       ),
       home: FutureBuilder(
+        
         // Función para cargar datos
         future: _loadData(),
 
@@ -51,6 +52,7 @@ class MyApp extends StatelessWidget {
                   : HomePage(token: token);
             }
           } else {
+            // Pantalla de carga al abrir la aplicación
             return Center(
               child: SplashScreen(),
             );
