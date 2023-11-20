@@ -50,7 +50,7 @@ class SettingsPageState extends State<SettingsPage> {
 
   Future<void> _logout() async {
     SharedPreferences preferences = await SharedPreferences.getInstance();
-    await preferences.remove('token');
+    await preferences.clear();
   }
 
   @override

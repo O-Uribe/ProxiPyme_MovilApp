@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:proxi_pyme/pages/welcome/components/background.dart';
-import 'package:flutter_svg/svg.dart';
 import 'package:proxi_pyme/components/rounded_button.dart';
 import 'package:proxi_pyme/utils/constants.dart';
 
@@ -12,14 +11,16 @@ class Body extends StatelessWidget {
         child: Column(
       mainAxisAlignment: MainAxisAlignment.center,
       children: <Widget>[
-        Text(
-          "Bienvenido a ProxyPyme",
-          style: TextStyle(fontWeight: FontWeight.bold),
-        ),
+        Text("Bienvenido",
+            style: TextStyle(
+              fontWeight: FontWeight.bold,
+              fontSize: 22,
+              color: size.width > 500 ? Colors.black : kPrimaryColor,
+            )),
         SizedBox(height: size.height * 0.05),
-        SvgPicture.asset(
-          "assets/icons/chat.svg",
-          height: size.height * 0.45,
+        Image.asset(
+          "assets/images/LogoNew.png",
+          height: size.height * 0.15,
         ),
         SizedBox(height: size.height * 0.05),
         RoundedButton(

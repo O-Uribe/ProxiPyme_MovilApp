@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/svg.dart';
 import 'package:proxi_pyme/components/rounded_button.dart';
 import 'package:proxi_pyme/pages/login/components/background.dart';
 import 'package:proxi_pyme/components/check_account.dart';
@@ -110,9 +109,9 @@ class _LoginPageState extends State<LoginPage> {
                 style: TextStyle(fontWeight: FontWeight.bold),
               ),
               SizedBox(height: size.height * 0.03),
-              SvgPicture.asset(
-                "assets/icons/login.svg",
-                height: size.height * 0.20,
+              Image.asset(
+                "assets/icons/register.gif",
+                height: size.height * 0.30,
               ),
               SizedBox(height: size.height * 0.03),
               RoundedInputField(

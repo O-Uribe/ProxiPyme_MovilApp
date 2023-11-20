@@ -1,16 +1,18 @@
 // splash_screen.dart
 import 'package:flutter/material.dart';
-import 'package:flutter_spinkit/flutter_spinkit.dart';
+//import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:proxi_pyme/utils/constants.dart';
 
 class SplashScreen extends StatefulWidget {
   SplashScreen({Key? key}) : super(key: key);
 
   @override
+  // ignore: library_private_types_in_public_api
   _SplashScreenState createState() => _SplashScreenState();
 }
 
-class _SplashScreenState extends State<SplashScreen> with SingleTickerProviderStateMixin {
+class _SplashScreenState extends State<SplashScreen>
+    with SingleTickerProviderStateMixin {
   late AnimationController _controller;
   late Animation<double> animation;
   late Animation<double> animationLogo;
@@ -76,7 +78,6 @@ class _SplashScreenState extends State<SplashScreen> with SingleTickerProviderSt
                   "assets/images/LogoApp.png",
                   width: animationLogo.value * 100,
                   height: animationLogo.value * 100,
-                  
                 ),
               ),
             );
