@@ -10,6 +10,7 @@ class CategoriesPage extends StatefulWidget {
   const CategoriesPage({Key? key, required this.categoria}) : super(key: key);
 
   @override
+  // ignore: library_private_types_in_public_api
   _CategoriesPageState createState() => _CategoriesPageState();
 }
 
@@ -81,7 +82,8 @@ class _CategoriesPageState extends State<CategoriesPage> {
                     Navigator.push(
                       context,
                       MaterialPageRoute(
-                        builder: (context) => UserProfile(),
+                        builder: (context) =>
+                            UserProfile(nombrePyme: pymes[index]['nombrePyme']),
                       ),
                     );
                   },
@@ -96,6 +98,7 @@ class _CategoriesPageState extends State<CategoriesPage> {
     );
   }
 
+  // ignore: non_constant_identifier_names
   Widget box_pyme(String nombrePyme, String logoUrl) {
     return Container(
       decoration: BoxDecoration(

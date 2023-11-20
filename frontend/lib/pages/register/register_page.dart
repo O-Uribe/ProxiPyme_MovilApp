@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/svg.dart';
 import 'package:proxi_pyme/components/check_account.dart';
 import 'package:proxi_pyme/components/custom_drop_button.dart';
 import 'package:proxi_pyme/components/rounded_button.dart';
@@ -136,9 +135,10 @@ class _RegisterPageState extends State<RegisterPage> {
                 style: TextStyle(fontWeight: FontWeight.bold, fontSize: 15),
               ),
               SizedBox(height: size.height * 0.02),
-              SvgPicture.asset(
-                "assets/icons/signup.svg",
-                height: size.height * 0.1,
+              Image.asset(
+                "assets/icons/login.gif",
+                height: size.height *
+                    0.30, // Ajusta el tamaño según tus necesidades
               ),
               SizedBox(height: size.height * 0.03),
               Text(

@@ -3,8 +3,15 @@ import 'package:proxi_pyme/utils/constants.dart';
 
 class IconoLogo extends StatefulWidget {
   final String? logoUrl;
+  final double width;
+  final double height;
 
-  const IconoLogo({Key? key, this.logoUrl}) : super(key: key);
+  const IconoLogo({
+    Key? key,
+    this.logoUrl,
+    this.width = 50.0,
+    this.height = 50.0,
+  }) : super(key: key);
 
   @override
   State<IconoLogo> createState() => _IconoLogoState();
@@ -22,16 +29,16 @@ class _IconoLogoState extends State<IconoLogo> {
           ? ClipOval(
               child: Image.network(
                 widget.logoUrl!,
-                width: 50,
-                height: 50,
+                width: widget.width,
+                height: widget.height,
                 fit: BoxFit.cover, // Ajusta la imagen dentro del círculo
               ),
             )
           : ClipOval(
               child: Image.asset(
                 'assets/images/perfil.png',
-                width: 50,
-                height: 50,
+                width: widget.width,
+                height: widget.height,
                 fit: BoxFit.cover,
               ),
             ),

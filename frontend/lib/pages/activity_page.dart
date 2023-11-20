@@ -10,49 +10,20 @@ class Activity extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment
             .spaceEvenly, // Para alinear los cuadros en el centro del espacio disponible
         children: [
-          GestureDetector(
-            onTap: () {
-              Navigator.pushNamed(
-                context,
-                '/UploadImage',
-              );
-            },
-            child: Container(
-              width: 180,
-              height: 100,
-              decoration: BoxDecoration(
-                  image: DecorationImage(
-                    image: AssetImage(
-                        'assets/images/mapa.png'), // Reemplaza 'imagen1.png' con la ruta de tu imagen
-                    fit: BoxFit.cover,
-                  ),
-                  borderRadius: BorderRadius.circular(4)),
-              child: Text('Mapa',
-                  textAlign: TextAlign.center,
-                  style: TextStyle(color: Colors.white)),
-            ),
+          Container(
+            width: 100,
+            height: 100,
+            color: Colors.red,
           ),
-          GestureDetector(
-            onTap: () {
-              Navigator.pushNamed(
-                context,
-                '/UploadImage',
-              );
-            },
-            child: Container(
-              width: 180,
-              height: 100,
-              decoration: BoxDecoration(
-                  image: DecorationImage(
-                    image: AssetImage(
-                        'assets/images/ñandrejo.png'), // Reemplaza 'imagen3.png' con la ruta de tu imagen
-                    fit: BoxFit.cover,
-                  ),
-                  borderRadius: BorderRadius.circular(4)),
-              child: Text('Ñandrejo',
-                  textAlign: TextAlign.center,
-                  style: TextStyle(color: Colors.white)),
-            ),
+          Container(
+            width: 100,
+            height: 100,
+            color: Colors.green,
+          ),
+          Container(
+            width: 100,
+            height: 100,
+            color: Colors.blue,
           ),
         ],
       ),

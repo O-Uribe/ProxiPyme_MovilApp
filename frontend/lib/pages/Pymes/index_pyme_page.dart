@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:jwt_decoder/jwt_decoder.dart';
 import 'package:proxi_pyme/components/logo_pymes.dart';
+import 'package:proxi_pyme/utils/constants.dart';
 import 'package:proxi_pyme/utils/get_user.dart';
 import 'dart:convert';
 import 'package:http/http.dart' as http;
@@ -10,16 +11,17 @@ class IndexPymePage extends StatefulWidget {
   const IndexPymePage({@required this.token, Key? key}) : super(key: key);
 
   @override
-  State<IndexPymePage> createState() => _IndexPymePageState();
+  State<IndexPymePage> createState() => _IndexUserPageState();
 }
 
-class _IndexPymePageState extends State<IndexPymePage> {
+class _IndexUserPageState extends State<IndexPymePage> {
   late String userId;
 
   Map<String, dynamic>? userData;
   String searchQuery = "";
   List<String> searchResults = [];
 
+  bool showAllCategories = false;
   @override
   void initState() {
     super.initState();
@@ -55,6 +57,72 @@ class _IndexPymePageState extends State<IndexPymePage> {
     }
   }
 
+  Future<List<dynamic>> getUsers() async {
+    List<dynamic> users = [];
+
+    await UserService.fetchUsers().then((jsonData) {
+      if (jsonData != null) {
+        for (var user in jsonData) {
+          var nombreUsuario = user['nombreUsuario'];
+          if (nombreUsuario != null) {
+            users.add(nombreUsuario);
+          }
+        }
+      }
+    });
+    return users;
+  }
+
+  Future<void> _editPymeData() async {
+    TextEditingController productNameController = TextEditingController();
+    TextEditingController productDescriptionController =
+        TextEditingController();
+
+    await showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text('Editar detalles de la PYME'),
+          content: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: <Widget>[
+              TextFormField(
+                controller: productNameController,
+                decoration: InputDecoration(labelText: 'Nombre del producto'),
+              ),
+              TextFormField(
+                controller: productDescriptionController,
+                decoration:
+                    InputDecoration(labelText: 'Descripción del producto'),
+              ),
+              //campo para subir foto
+            ],
+          ),
+          actions: <Widget>[
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+              child: Text('Cancelar'),
+            ),
+            TextButton(
+              onPressed: () {
+                setState(() {
+                  userData?['nombreProducto'] = productNameController.text;
+                  userData?['descripcionProducto'] =
+                      productDescriptionController.text;
+                  // Actualiza otros campos según sea necesario
+                });
+                Navigator.of(context).pop();
+              },
+              child: Text('Guardar'),
+            ),
+          ],
+        );
+      },
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -68,61 +136,31 @@ class _IndexPymePageState extends State<IndexPymePage> {
               crossAxisAlignment: CrossAxisAlignment.center,
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: <Widget>[
-                Text("Categorías",
-                    style: TextStyle(
-                      fontWeight: FontWeight.bold,
-                      fontSize: 22.0,
-                    )),
-                Text("Ver más",
-                    style: TextStyle(
-                      fontWeight: FontWeight.bold,
-                      fontSize: 12.0,
-                    )),
+                Text(
+                  "Sube tus productos",
+                  style: TextStyle(
+                    fontWeight: FontWeight.bold,
+                    fontSize: 22.0,
+                  ),
+                ),
+                IconButton(
+                  onPressed: _editPymeData,
+                  icon: Icon(Icons.add),
+                ),
               ],
             ),
           ),
-          SizedBox(height: 20.0),
-          SizedBox(
-              height: 190.0,
-              child: GridView(
-                gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                  crossAxisCount: 3,
-                  childAspectRatio: 3 / 2,
-                ),
-                children: <Widget>[
-                  _gridItem(Icon(Icons.restaurant, color: Colors.white),
-                      Color.fromRGBO(199, 220, 167, 1.0), "Comida"),
-                  _gridItem(Icon(Icons.shopping_bag, color: Colors.white),
-                      Color.fromRGBO(199, 220, 167, 1.0), "Ropa"),
-                  _gridItem(Icon(Icons.woman, color: Colors.white),
-                      Color.fromRGBO(199, 220, 167, 1.0), "Belleza"),
-                  _gridItem(Icon(Icons.medical_services, color: Colors.white),
-                      Color.fromRGBO(199, 220, 167, 1.0), "Salud"),
-                  _gridItem(Icon(Icons.home, color: Colors.white),
-                      Color.fromRGBO(199, 220, 167, 1.0), "Hogar"),
-                  _gridItem(Icon(Icons.sports_soccer, color: Colors.white),
-                      Color.fromRGBO(199, 220, 167, 1.0), "Deportes"),
-                  _gridItem(Icon(Icons.pets, color: Colors.white),
-                      Color.fromRGBO(199, 220, 167, 1.0), "Mascotas"),
-                  _gridItem(Icon(Icons.book, color: Colors.white),
-                      Color.fromRGBO(199, 220, 167, 1.0), "Libros"),
-                  _gridItem(Icon(Icons.computer, color: Colors.white),
-                      Color.fromRGBO(199, 220, 167, 1.0), "Tecnología"),
-                  _gridItem(Icon(Icons.local_offer, color: Colors.white),
-                      Color.fromRGBO(199, 220, 167, 1.0), "Servicios"),
-                  _gridItem(Icon(Icons.more_horiz, color: Colors.white),
-                      Color.fromRGBO(199, 220, 167, 1.0), "Otros"),
-                ],
-              )),
           Padding(
-            padding: EdgeInsets.all(16.0),
+            padding: EdgeInsets.all(15.0),
             child: Row(
               children: [
-                Text("Últimas publicaciones",
-                    style: TextStyle(
-                      fontSize: 22.0,
-                      fontWeight: FontWeight.bold,
-                    )),
+                Text(
+                  "Últimas publicaciones",
+                  style: TextStyle(
+                    fontSize: 22.0,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
               ],
             ),
           ),
@@ -177,28 +215,11 @@ _cardItem(image) {
       ));
 }
 
-_gridItem(Icon icon, Color color, String label) {
-  return Card(
-    color: color,
-    child: Column(
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: <Widget>[
-        icon,
-        SizedBox(height: 10.0),
-        Text(label,
-            style: TextStyle(
-              color: Colors.white,
-            )),
-      ],
-    ),
-  );
-}
-
 _top(Map<String, dynamic>? userData) {
   return Container(
       padding: EdgeInsets.all(16.0),
       decoration: BoxDecoration(
-        color: Color.fromARGB(255, 26, 101, 158),
+        color: kPrimaryColor,
         borderRadius: BorderRadius.only(
           bottomLeft: Radius.circular(30.0),
           bottomRight: Radius.circular(30.0),
@@ -213,20 +234,23 @@ _top(Map<String, dynamic>? userData) {
                 children: <Widget>[
                   CircleAvatar(
                     backgroundColor: Colors.white,
-                    child: IconoLogo(logoUrl: userData?["logoPyme"]),
+                    child: IconoLogo(
+                      logoUrl: userData?["logoPyme"] ?? '',
+                      width: 100.0,
+                      height: 100.0,
+                    ),
                   ),
                   SizedBox(width: 10.0),
-                  Text("Hola, ${userData?["encargadoPyme"]}",
-                      style: TextStyle(
-                        color: Colors.white,
-                      )),
+                  Text(
+                    "Hola, ${userData?["nombreUsuario"] ?? ''}",
+                    style: TextStyle(
+                      color: Colors.white,
+                    ),
+                  )
                 ],
               ),
               IconButton(
-                icon: Icon(
-                  Icons.notifications,
-                  color: const Color.fromARGB(255, 18, 184, 148),
-                ),
+                icon: Icon(Icons.notifications, color: Colors.white),
                 onPressed: () {},
               ),
             ],

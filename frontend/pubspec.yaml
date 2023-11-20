@@ -42,4 +42,6 @@ flutter:
       - assets/
       - assets/images/
       - assets/icons/
+      - assets/icons/login.gif
+      - assets/icons/register.gif
       
